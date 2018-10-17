@@ -29,7 +29,7 @@
     <UseExistingModules>true</UseExistingModules>
     <RenamePeripheries>false</RenamePeripheries>
     <Autodependency>true</Autodependency>
-    <ProjectCompNumb>119</ProjectCompNumb>
+    <ProjectCompNumb>120</ProjectCompNumb>
     <DelUnusedPreviouslyGenFiles>true</DelUnusedPreviouslyGenFiles>
     <GeneratedCodeFrozen>false</GeneratedCodeFrozen>
     <AssignInitComponentNameToPrph>true</AssignInitComponentNameToPrph>
@@ -5838,7 +5838,7 @@
     <Events />
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>Wait</BeanType>
     <Name>WAIT1</Name>
     <CompNumb>12</CompNumb>
@@ -6663,7 +6663,7 @@
     <Events />
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>CriticalSection</BeanType>
     <Name>CS1</Name>
     <CompNumb>16</CompNumb>
@@ -6765,7 +6765,7 @@
     <Events />
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>HardFault</BeanType>
     <Name>HF1</Name>
     <CompNumb>17</CompNumb>
@@ -17469,7 +17469,7 @@
     </Events>
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>KinetisSDK</BeanType>
     <Name>KSDK1</Name>
     <CompNumb>38</CompNumb>
@@ -22408,7 +22408,7 @@
     </Events>
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>Shell</BeanType>
     <Name>CLS1</Name>
     <CompNumb>70</CompNumb>
@@ -23027,7 +23027,7 @@
     </Events>
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>Utility</BeanType>
     <Name>UTIL1</Name>
     <CompNumb>71</CompNumb>
@@ -23888,7 +23888,7 @@
     <Events />
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>FreeRTOS</BeanType>
     <Name>FRTOS1</Name>
     <CompNumb>72</CompNumb>
@@ -23898,7 +23898,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.561</BeanVersion>
+    <BeanVersion>01.562</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -23911,7 +23911,7 @@
         <ItemSymbol>FreeRTOSVersion</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>V10.1.0</Value>
+        <Value>V10.1.1</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>KinetisSDK</ItemSymbol>
@@ -26420,7 +26420,7 @@
     </Events>
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>SeggerSystemView</BeanType>
     <Name>SYS1</Name>
     <CompNumb>76</CompNumb>
@@ -26762,7 +26762,7 @@
     <Events />
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>SeggerRTT</BeanType>
     <Name>RTT1</Name>
     <CompNumb>78</CompNumb>
@@ -27211,7 +27211,7 @@
     <Events />
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>RNet</BeanType>
     <Name>RNET1</Name>
     <CompNumb>80</CompNumb>
@@ -27577,7 +27577,7 @@
     </Events>
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>nRF24L01</BeanType>
     <Name>RF1</Name>
     <CompNumb>81</CompNumb>
@@ -31771,7 +31771,7 @@
     </Events>
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>KinetisTools</BeanType>
     <Name>KIN1</Name>
     <CompNumb>91</CompNumb>
@@ -34004,7 +34004,7 @@
     </Events>
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>McuLibConfig</BeanType>
     <Name>MCUC1</Name>
     <CompNumb>112</CompNumb>
@@ -34077,7 +34077,7 @@
     <Events />
   </Bean>
   <Bean>
-    <Repository>file:/${ProcessorExpertPath:user}</Repository>
+    <Repository>file:/${home_ProcessorExpert_loc}/MyComponents</Repository>
     <BeanType>XFormat</BeanType>
     <Name>XF1</Name>
     <CompNumb>115</CompNumb>
