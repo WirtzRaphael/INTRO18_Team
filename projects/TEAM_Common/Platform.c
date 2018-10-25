@@ -246,7 +246,7 @@ void PL_Deinit(void) {
   TMR_Deinit();
 #endif
 #if PL_CONFIG_HAS_EVENTS
-  EVNT_Init();
+  EVNT_Deinit();
 #endif
 #if PL_CONFIG_HAS_LEDS
   LED_Deinit();
