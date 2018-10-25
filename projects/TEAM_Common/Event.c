@@ -28,9 +28,10 @@ static EVNT_MemUnit EVNT_Events[((EVNT_NOF_EVENTS-1)/EVNT_MEM_UNIT_NOF_BITS)+1];
 #define GET_EVENT(event) \
   (EVNT_Events[(event)/EVNT_MEM_UNIT_NOF_BITS]&(((1u<<(EVNT_MEM_UNIT_NOF_BITS-1))>>(((event)%EVNT_MEM_UNIT_NOF_BITS))))) /*!< Return TRUE if event is set */
 
+/*
 void myISR(void) {
 	EVNT_SetEvent(EVNT_LED_HEARTBEAT);
-}
+}*/
 
 void EVNT_SetEvent(EVNT_Handle event) {
   /*! \todo Make it reentrant */
