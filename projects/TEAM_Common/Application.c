@@ -10,6 +10,7 @@
 #include "Application.h"
 #include "Event.h"
 #include "LED.h"
+#include "Trigger.h"
 #include "WAIT1.h"
 #include "CS1.h"
 #include "KeyDebounce.h"
@@ -93,7 +94,7 @@ void APP_EventHandler(EVNT_Handle event) {
     LED2_Neg();
     break;
 #if PL_CONFIG_NOF_KEYS>=1
-  case EVNT_SW1_PRESSED:
+  case EVNT_SW1_PRESSED:	//rw: depends on PL_LOCAL_CONFIG_NOF_KEYS
     BtnMsg(1, "pressed");
      break;
 #endif
@@ -183,13 +184,27 @@ void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
+  EVNT_SetEvent(EVNT_STARTUP);
   for(;;) {
-	  LED1_On();
-	  LED2_On();
-	  WAIT1_Waitms(500);
-	  LED1_Off();
-	  LED2_Off();
-	  WAIT1_Waitms(500);
+	  //EVNT_HandleEvent(APP_EventHandler, TRUE);
+	  //--------------------
+	  // LED
+	  //--------------------
+	#if PL_CONFIG_NOF_LEDS>=1
+	  //	  LED1_On();
+	#endif
+	#if PL_CONFIG_NOF_LEDS>=2
+	//	  LED2_On();
+	#endif
+	#if PL_CONFIG_NOF_LEDS>=3
+	//	  LED3_On();
+	#endif
+	  //WAIT1_Waitms(500);
+	  //LED1_Off();
+	  //LED2_Off();
+	  //LED3_Off();
+	  //WAIT1_Waitms(500);
+	  //EVNT_SetEvent(EVNT_LED_HEARTBEAT);
   }
 }
 
