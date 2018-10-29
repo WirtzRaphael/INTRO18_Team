@@ -26,6 +26,11 @@ void TMR_OnInterrupt(void) {
   static unsigned int cntr = 0;
   /* this one gets called from an interrupt!!!! */
   /*! \todo Add code for a blinking LED here */
+  cntr++;
+  if(cntr==(1000/TMR_TICK_MS)) {
+	  EVNT_SetEvent(EVNT_LED_HEARTBEAT);
+	  cntr = 0; // reset
+  }
 }
 
 void TMR_Init(void) {

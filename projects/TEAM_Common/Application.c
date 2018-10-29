@@ -205,7 +205,7 @@ void APP_Start(void) {
 	  //LED2_Off();
 	  //LED3_Off();
 	  //WAIT1_Waitms(500);
-	  EVNT_SetEvent(EVNT_LED_HEARTBEAT);
+	  //EVNT_SetEvent(EVNT_LED_HEARTBEAT);
   }
 }
 
