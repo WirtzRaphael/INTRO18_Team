@@ -206,6 +206,14 @@ void APP_Start(void) {
 	  //LED3_Off();
 	  //WAIT1_Waitms(500);
 	  //EVNT_SetEvent(EVNT_LED_HEARTBEAT);
+	  //--------------------
+	  // Keys
+	  //--------------------
+	  LED1_Off();
+	  if(SW1_GetVal()==0){	// key pressed
+		  LED1_On();
+	  }
+
   }
 }
 
