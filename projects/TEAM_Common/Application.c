@@ -211,9 +211,9 @@ void APP_Start(void) {
 	  //--------------------
 	  LED1_Off();
 	  if(SW1_GetVal()==0){	// key pressed
-		  LED1_On();
+		  //LED1_On();
+		  EVNT_SetEvent(EVNT_STARTUP);
 	  }
-
   }
 }
 
