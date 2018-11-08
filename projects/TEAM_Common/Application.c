@@ -186,6 +186,7 @@ void APP_Start(void) {
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
   EVNT_SetEvent(EVNT_STARTUP);
+  RTT1_Init();
   for(;;) {
 	  EVNT_HandleEvent(APP_EventHandler, TRUE);
 	  //--------------------
@@ -213,6 +214,7 @@ void APP_Start(void) {
 	  if(SW1_GetVal()==0){	// key pressed
 		  //LED1_On();
 		  EVNT_SetEvent(EVNT_STARTUP);
+		  RTT1_WriteString(0,"test\n");
 	  }
   }
 }
