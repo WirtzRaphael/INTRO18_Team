@@ -18,5 +18,6 @@ void APP_EventHandler(EVNT_Handle event);
 #endif
 
 void APP_Start(void);
+void assignment15keys(void);
 
 #endif /* SOURCES_FS2016_COMMON_APPLICATION_H_ */
