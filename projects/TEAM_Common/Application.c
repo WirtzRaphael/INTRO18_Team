@@ -191,24 +191,27 @@ void APP_Start(void) {
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
 
-  // --------------------------------------------------
-  // #17 TRIGGER
-  // -------------------------------------------------
-  EVNT_SetEvent(EVNT_STARTUP);
-
-  //BUZ_Init();			// not used !
-  //BUZ_PlayTune(BUZ_TUNE_WELCOME);
-  BUZ_Beep(300,1000);
-  //TRG1_Init();		// not used !
-  TRG_SetTrigger(TRG_BLINK,0,blinkLED, NULL);
   for(;;){
-	  EVNT_HandleEvent(APP_EventHandler, TRUE);
+
   }
+
 }
 
-
+// --------------------------------------------------
+// #17 TRIGGER
+// platform: 	Robo V1
+// -------------------------------------------------
 void assignment17trigger(void){
+	EVNT_SetEvent(EVNT_STARTUP);
 
+	//BUZ_Init();			// not used !
+	//BUZ_PlayTune(BUZ_TUNE_WELCOME);
+	BUZ_Beep(300,1000);
+	//TRG1_Init();		// not used !
+	TRG_SetTrigger(TRG_BLINK,0,blinkLED, NULL);
+	for(;;){
+	  EVNT_HandleEvent(APP_EventHandler, TRUE);
+	}
 }
 
 // --------------------------------------------------
@@ -223,7 +226,7 @@ void assignment16consoleRoboV2(void){
 
 // --------------------------------------------------
 // #16 CONSOLE - serial RTT
-// platform: 	Robo V
+// platform: 	Robo V1
 // -------------------------------------------------
 void assignment16console(void){
 	  //--- Events
