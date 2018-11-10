@@ -186,57 +186,43 @@ void APP_Start(void) {
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
 
-  EVNT_SetEvent(EVNT_STARTUP);
-  RTT1_Init();
-  for(;;) {
-	  EVNT_HandleEvent(APP_EventHandler, TRUE);
-	  //--------------------
-	  // LED
-	  //--------------------
-	#if PL_CONFIG_NOF_LEDS>=1
-	  //	  LED1_On();
-	#endif
-	#if PL_CONFIG_NOF_LEDS>=2
-	//	  LED2_On();
-	#endif
-	#if PL_CONFIG_NOF_LEDS>=3
-	//	  LED3_On();
-	#endif
-	  //WAIT1_Waitms(500);
-	  //LED1_Off();
-	  //LED2_Off();
-	  //LED3_Off();
-	  //WAIT1_Waitms(500);
-	  //EVNT_SetEvent(EVNT_LED_HEARTBEAT);
-	  //--------------------
-	  // Keys
-	  //--------------------
-	  LED1_Off();
-	  if(SW1_GetVal()==0){	// key pressed
-		  //LED1_On();
-		  EVNT_SetEvent(EVNT_STARTUP);
+  assignment16console();
 
-		  //--- buffer size and start
-		  uint8_t buffer_write[48];
-		  buffer_write[0] = '\0';	// start position, writes otherwise at the end of the buffer
+}
 
-		  //--- uint8 -> string
-		  uint8_t buffer_value[48];
-		  uint8_t b = 8;
-		  UTIL1_Num8uToStr(buffer_value,sizeof(buffer_value),b);
+void assignment16console(void){
+	  //--- Events
+	  EVNT_SetEvent(EVNT_STARTUP); // nescessary ?
+	  //--- Init
+	  RTT1_Init();		// real time terminal init
 
-		  //--- string
-		  char str[]=" value ";
+	 for(;;) {
+		  EVNT_HandleEvent(APP_EventHandler, TRUE);
 
-		  //--- write in buffer
-		  UTIL1_strcat(buffer_write, sizeof(buffer_write), str);
-		  UTIL1_strcat(buffer_write, sizeof(buffer_write), buffer_value);
+		  if(SW1_GetVal()==0){	// key pressed
+			  EVNT_SetEvent(EVNT_STARTUP);
 
-		  //--- send
-		  RTT1_WriteString(0, buffer_write);	// send buffer
-		  RTT1_WriteString(0,"\n");				// newline
-	  }
-  }
+			  //--- buffer size and start
+			  uint8_t buffer_write[48];
+			  buffer_write[0] = '\0';	// start position, writes otherwise at the end of the buffer
+
+			  //--- uint8 -> string
+			  uint8_t buffer_value[48];
+			  uint8_t b = 8;
+			  UTIL1_Num8uToStr(buffer_value,sizeof(buffer_value),b);
+
+			  //--- string
+			  char str[]=" value ";
+
+			  //--- write in buffer
+			  UTIL1_strcat(buffer_write, sizeof(buffer_write), str);
+			  UTIL1_strcat(buffer_write, sizeof(buffer_write), buffer_value);
+
+			  //--- send
+			  RTT1_WriteString(0, buffer_write);	// send buffer
+			  RTT1_WriteString(0,"\n");				// newline
+		  }
+	 }
 }
 
 void assignment15keys(void){
