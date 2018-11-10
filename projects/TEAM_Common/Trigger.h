@@ -15,6 +15,7 @@
 #include "Timer.h"
 
 #define TRG_TICKS_MS  TMR_TICK_MS
+// TRG_TICKS_MS wird so gross gewaehtl wie TMR_TICKS_MS (thx @hoti)
   /*!< Defines the period at which TRG_IncTick gets called */
 
 /*! \brief Triggers which can be used from the application */
