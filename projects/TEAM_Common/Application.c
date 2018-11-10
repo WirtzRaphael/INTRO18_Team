@@ -181,6 +181,11 @@ static void APP_AdoptToHardware(void) {
 #endif
 }
 
+static void blinkLED(void *p){
+	LED1_Neg();
+	TRG_SetTrigger(TRG_BLINK,1000/TMR_TICK_MS,blinkLED, NULL);
+}
+
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
@@ -189,11 +194,18 @@ void APP_Start(void) {
   // --------------------------------------------------
   // #17 TRIGGER
   // -------------------------------------------------
+  EVNT_SetEvent(EVNT_STARTUP);
 
+  //BUZ_Init();			// not used !
+  //BUZ_PlayTune(BUZ_TUNE_WELCOME);
+  BUZ_Beep(300,1000);
+  //TRG1_Init();		// not used !
+  TRG_SetTrigger(TRG_BLINK,0,blinkLED, NULL);
   for(;;){
-
+	  EVNT_HandleEvent(APP_EventHandler, TRUE);
   }
 }
+
 
 void assignment17trigger(void){
 
