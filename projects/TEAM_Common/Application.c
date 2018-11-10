@@ -186,16 +186,33 @@ void APP_Start(void) {
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
 
-  assignment16console();
+  // --------------------------------------------------
+  // #17 TRIGGER
+  // -------------------------------------------------
+
+  for(;;){
+
+  }
+}
+
+void assignment17trigger(void){
 
 }
 
-
-void assignment16consoleRoboV2 (void){
+// --------------------------------------------------
+// #16 CONSOLE - asynchrone serial
+// platform: 	Robo V2
+// autor: 		arbnor
+// -------------------------------------------------
+void assignment16consoleRoboV2(void){
 	  char test[12]="Shell Test\n";
 	  CLS1_SendStr(test , CLS1_GetStdio()->stdOut);
 }
 
+// --------------------------------------------------
+// #16 CONSOLE - serial RTT
+// platform: 	Robo V
+// -------------------------------------------------
 void assignment16console(void){
 	  //--- Events
 	  EVNT_SetEvent(EVNT_STARTUP); // nescessary ?
@@ -231,6 +248,10 @@ void assignment16console(void){
 	 }
 }
 
+// --------------------------------------------------
+// #5 KEYS
+// platform: 	Robo V1
+// -------------------------------------------------
 void assignment15keys(void){
 	EVNT_SetEvent(EVNT_STARTUP);
 	RTT1_Init();

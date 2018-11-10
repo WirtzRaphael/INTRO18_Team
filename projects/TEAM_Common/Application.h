@@ -21,6 +21,7 @@ void APP_Start(void);
 void assignment15keys(void);
 void assignment16console(void);
 void assignment16consoleRoboV2 (void);
+void assignment17trigger(void);
 
 
 #endif /* SOURCES_FS2016_COMMON_APPLICATION_H_ */
