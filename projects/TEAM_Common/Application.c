@@ -190,6 +190,12 @@ void APP_Start(void) {
 
 }
 
+
+void assignment16consoleRoboV2 (void){
+	  char test[12]="Shell Test\n";
+	  CLS1_SendStr(test , CLS1_GetStdio()->stdOut);
+}
+
 void assignment16console(void){
 	  //--- Events
 	  EVNT_SetEvent(EVNT_STARTUP); // nescessary ?

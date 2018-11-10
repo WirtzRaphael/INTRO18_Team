@@ -20,7 +20,7 @@ void APP_EventHandler(EVNT_Handle event);
 void APP_Start(void);
 void assignment15keys(void);
 void assignment16console(void);
-
+void assignment16consoleRoboV2 (void);
 
 
 #endif /* SOURCES_FS2016_COMMON_APPLICATION_H_ */
