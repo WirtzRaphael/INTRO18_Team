@@ -15,6 +15,7 @@
 #include "Event.h"
 
 void APP_EventHandler(EVNT_Handle event);
+void KEY_scan(void);
 #endif
 
 void APP_Start(void);

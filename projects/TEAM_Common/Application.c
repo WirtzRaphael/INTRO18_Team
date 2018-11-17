@@ -81,8 +81,11 @@ static void BtnMsg(int btn, const char *msg) {
 void APP_EventHandler(EVNT_Handle event) {
   /*! \todo handle events */
   switch(event) {
+
   case EVNT_STARTUP:
     {
+	//BUZ_Beep(300,1000);
+	 CLS1_SendStr("startup...\n", CLS1_GetStdio()->stdOut);
       int i;
       for (i=0;i<5;i++) {
         LED1_Neg();
@@ -91,14 +94,16 @@ void APP_EventHandler(EVNT_Handle event) {
       LED1_Off();
     }
     break;
+
   case EVNT_LED_HEARTBEAT:
     LED2_Neg();
     break;
+
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:	//rw: depends on PL_LOCAL_CONFIG_NOF_KEYS
     BtnMsg(1, "pressed");
      break;
-#endif
+#endif /* PL_CONFIG_NOF_KEYS */
     default:
       break;
    } /* switch */
@@ -186,13 +191,21 @@ static void blinkLED(void *p){
 	TRG_SetTrigger(TRG_BLINK,1000/TMR_TICK_MS,blinkLED, NULL);
 }
 
+void KEY_scan(void){
+	//if(KEY1_Get()){	% unnecessary
+	KEYDBNC_Process();	// Key - FSM
+	EVNT_HandleEvent(APP_EventHandler, TRUE); // Event
+	//}
+}
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
 
-  for(;;){
+  EVNT_SetEvent(EVNT_STARTUP);
 
+  for(;;){
+	  KEY_scan();
   }
 
 }
