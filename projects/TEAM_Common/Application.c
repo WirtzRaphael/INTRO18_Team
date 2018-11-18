@@ -201,6 +201,16 @@ void KEY_scan(void){
 	EVNT_HandleEvent(APP_EventHandler, TRUE); // Event
 	//}
 }
+
+//static void firstTask(void){
+static void firstTask(void *pvParameters){
+	(void)pvParameters;	//cast
+
+	for(;;){
+		vTaskDelay(500/portTICK_RATE_MS);
+	}
+}
+
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
@@ -229,9 +239,26 @@ void APP_Start(void) {
 
   EVNT_SetEvent(EVNT_STARTUP);
 
+	xTaskHandle taskHndl;
+
+	//<< create task
+	BaseType_t res;
+	res = xTaskCreate(
+			firstTask,	/* function */
+			"firstTask",	/* kernel awareness name */
+			configMINIMAL_STACK_SIZE+10,	/* stack */
+			(void*) NULL, 	/* task parameter */
+			tskIDLE_PRIORITY, 	/* priority */
+			&taskHndl 	/* handle */
+		);//>> create task
+	if (res!=pdPASS){ /* error handling */ }
+
+	vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
+
   //RTOS_init(); // in PL_Init already
   for(;;){
 	  //EVNT_HandleEvent(APP_EventHandler, TRUE); // Event
+
   }
 
 }
