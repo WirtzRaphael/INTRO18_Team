@@ -192,7 +192,7 @@ static void blinkLED(void *p){
 }
 
 /*
- *
+ * FUNCTION
  * attention: 	function KEY_Scan in Keys.c
  */
 void KEY_scan(void){
@@ -269,16 +269,11 @@ void APP_Start(void) {
   );//>> create task
   if (res!=pdPASS){ /* error handling */ }
 
-// === [ task short version ] ===
-//  if (xTaskCreate(firstTask, "FirstTask", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, NULL) != pdPASS) {
-//     for(;;){} /* error case only, stay here! */
-//   }
-
   vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
 
   // ==========  [ loop ] ==========
   for(;;){
-	  EVNT_HandleEvent(APP_EventHandler, TRUE);
+	  //EVNT_HandleEvent(APP_EventHandler, TRUE);
 
   }
 
@@ -306,7 +301,37 @@ void APP_Start(void) {
 //  taskDISABLE_INTERRUPTS();	/* macro */
 //  taskENABLE_INTERRUPTS(); 	/* macro */
 void assignment19frtos_task(void){
+	  EVNT_SetEvent(EVNT_STARTUP);
 
+	  // ========== [ task ] ==========
+	  // ApplicationMallocFailedHook => increase heap size
+	  xTaskHandle taskHndl;
+
+	  //<< create task
+	  BaseType_t res;
+	  res = xTaskCreate(
+		firstTask,			/* function */
+		"firstTask",		/* kernel awareness name */
+		//configMINIMAL_STACK_SIZE+120,	/* stack */
+		500/sizeof(StackType_t),
+		(void*) NULL, 		/* task parameter */
+		tskIDLE_PRIORITY, 	/* priority */
+		&taskHndl 			/* handle */
+	  );//>> create task
+	  if (res!=pdPASS){ /* error handling */ }
+
+	// === [ task short version ] ===
+	//  if (xTaskCreate(firstTask, "FirstTask", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, NULL) != pdPASS) {
+	//     for(;;){} /* error case only, stay here! */
+	//   }
+
+	  vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
+
+	  // ==========  [ loop ] ==========
+	  for(;;){
+		  EVNT_HandleEvent(APP_EventHandler, TRUE);
+
+	  }
 }
 
 // --------------------------------------------------
