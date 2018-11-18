@@ -36,6 +36,8 @@
 #include "BitIoLdd2.h"
 #include "SW1.h"
 #include "BitIoLdd3.h"
+#include "FRTOS1.h"
+#include "RTOSCNTRLDD1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"
 #include "TU1.h"

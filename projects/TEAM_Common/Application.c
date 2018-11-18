@@ -191,6 +191,10 @@ static void blinkLED(void *p){
 	TRG_SetTrigger(TRG_BLINK,1000/TMR_TICK_MS,blinkLED, NULL);
 }
 
+/*
+ *
+ * attention: 	function KEY_Scan in Keys.c
+ */
 void KEY_scan(void){
 	//if(KEY1_Get()){	% unnecessary
 	KEYDBNC_Process();	// Key - FSM
