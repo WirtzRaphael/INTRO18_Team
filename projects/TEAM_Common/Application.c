@@ -215,6 +215,18 @@ void APP_Start(void) {
 }
 
 // --------------------------------------------------
+// #18 DEBOUNCE
+// platform: 	Robo V1
+// -------------------------------------------------
+void assignment18debounce(void){
+	EVNT_SetEvent(EVNT_STARTUP);
+	for(;;){
+		KEYDBNC_Process();	// Key - FSM
+		EVNT_HandleEvent(APP_EventHandler, TRUE); // Event
+	}
+}
+
+// --------------------------------------------------
 // #17 TRIGGER
 // platform: 	Robo V1
 // -------------------------------------------------
