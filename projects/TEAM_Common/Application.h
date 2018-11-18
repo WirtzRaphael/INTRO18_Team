@@ -23,6 +23,8 @@ void assignment15keys(void);
 void assignment16console(void);
 void assignment16consoleRoboV2 (void);
 void assignment17trigger(void);
+void assignment18debounce(void);
+void assignment19frtos_task(void);
 
 
 #endif /* SOURCES_FS2016_COMMON_APPLICATION_H_ */

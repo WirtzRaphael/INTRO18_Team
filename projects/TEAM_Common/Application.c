@@ -88,7 +88,7 @@ void APP_EventHandler(EVNT_Handle event) {
 	 CLS1_SendStr("startup...\n", CLS1_GetStdio()->stdOut);
       int i;
       for (i=0;i<5;i++) {
-        LED1_Neg();
+        //LED1_Neg();
         WAIT1_Waitms(50);
       }
       LED1_Off();
@@ -202,30 +202,100 @@ void KEY_scan(void){
 	//}
 }
 
-//static void firstTask(void){
+/* --------------------------------------------------
+ * TASK
+ * more features, more stack
+ * --------------------------------------------------
+ * ----- vTaskDelay()
+ * vTaskDelay() specifies a time at which the task wishes to unblock relative to
+ * the time at which vTaskDelay() is called.  For example, specifying a block
+ * period of 100 ticks will cause the task to unblock 100 ticks after
+ * vTaskDelay() is called.  vTaskDelay() does not therefore provide a good method
+ * of controlling the frequency of a periodic task as the path taken through the
+ * code, as well as other task and interrupt activity, will effect the frequency
+ * at which vTaskDelay() gets called and therefore the time at which the task
+ * next executes.
+ *
+ * ----- vTaskDelayUntil()
+ * Whereas vTaskDelay () specifies a wake time relative to the time at which the function
+ * is called, vTaskDelayUntil () specifies the absolute (exact) time at which it wishes to
+ * unblock.
+ *
+ * ----- vTaskDelay() vs vTaskDelayUntil()
+ * Whereas vTaskDelay () specifies a wake time relative to the time at which the function
+ * is called, vTaskDelayUntil () specifies the absolute (exact) time at which it wishes to
+ * unblock.
+ -------------------------------------------------- */
 static void firstTask(void *pvParameters){
 	(void)pvParameters;	//cast
 
+	// ========== [ start sequency ] ==========
+	BUZ_Beep(300,1000);
+	TRG_SetTrigger(TRG_BLINK,0,blinkLED, NULL);
+
+	// ========== [ loop ] ==========
 	for(;;){
 		vTaskDelay(500/portTICK_RATE_MS);
+		EVNT_HandleEvent(APP_EventHandler, TRUE);
 	}
 }
 
+/* --------------------------------------------------
+ * APP
+ * -------------------------------------------------- */
 void APP_Start(void) {
   PL_Init();
+  //RTOS_init(); // in PL_Init already
+
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
 
-  /*
-   * RTOS
-   * - RTOS_Init() 	called in PL_Init();
-   */
+  EVNT_SetEvent(EVNT_STARTUP);
 
-  /* ------------------------------------------------------------
-   * KERNEL CONTROL
-   * - FreeRTOS API to control the kernel
-   * - kernel states (init, running, suspended)
- 	 ------------------------------------------------------------ */
+  // ========== [ task ] ==========
+  // ApplicationMallocFailedHook => increase heap size
+  xTaskHandle taskHndl;
+
+  //<< create task
+  BaseType_t res;
+  res = xTaskCreate(
+	firstTask,			/* function */
+	"firstTask",		/* kernel awareness name */
+	//configMINIMAL_STACK_SIZE+120,	/* stack */
+	500/sizeof(StackType_t),
+	(void*) NULL, 		/* task parameter */
+	tskIDLE_PRIORITY, 	/* priority */
+	&taskHndl 			/* handle */
+  );//>> create task
+  if (res!=pdPASS){ /* error handling */ }
+
+// === [ task short version ] ===
+//  if (xTaskCreate(firstTask, "FirstTask", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, NULL) != pdPASS) {
+//     for(;;){} /* error case only, stay here! */
+//   }
+
+  vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
+
+  // ==========  [ loop ] ==========
+  for(;;){
+	  EVNT_HandleEvent(APP_EventHandler, TRUE);
+
+  }
+
+}
+
+/* --------------------------------------------------
+ * #19 freeRTOS
+ * platform: 	Robo V1
+ *
+ * RTOS
+ * - RTOS_Init() 	called in PL_Init();
+// -------------------------------------------------
+/* -------------------------------------------------
+ * KERNEL CONTROL
+ * - FreeRTOS API to control the kernel
+ * - kernel states (init, running, suspended)
+   ------------------------------------------------- */
 //  vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
 //  vTaskEndScheduler();		/* stops scheduler, release kernel rescources, task resources (queues, semaphores) are not freed */
 //  vTaskSuspendAll();			/* kernel suspending, from active to supsended state, intrrupts remain enabled, prevents context switch */
@@ -235,31 +305,7 @@ void APP_Start(void) {
 //  taskEXIT_CRITICAL();		/* exit critical section */
 //  taskDISABLE_INTERRUPTS();	/* macro */
 //  taskENABLE_INTERRUPTS(); 	/* macro */
-
-
-  EVNT_SetEvent(EVNT_STARTUP);
-
-	xTaskHandle taskHndl;
-
-	//<< create task
-	BaseType_t res;
-	res = xTaskCreate(
-			firstTask,	/* function */
-			"firstTask",	/* kernel awareness name */
-			configMINIMAL_STACK_SIZE+10,	/* stack */
-			(void*) NULL, 	/* task parameter */
-			tskIDLE_PRIORITY, 	/* priority */
-			&taskHndl 	/* handle */
-		);//>> create task
-	if (res!=pdPASS){ /* error handling */ }
-
-	vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
-
-  //RTOS_init(); // in PL_Init already
-  for(;;){
-	  //EVNT_HandleEvent(APP_EventHandler, TRUE); // Event
-
-  }
+void assignment19frtos_task(void){
 
 }
 
@@ -286,7 +332,8 @@ void assignment17trigger(void){
 	//BUZ_PlayTune(BUZ_TUNE_WELCOME);
 	BUZ_Beep(300,1000);
 	//TRG1_Init();		// not used !
-	TRG_SetTrigger(TRG_BLINK,0,blinkLED, NULL);
+	TRG_SetTrigger(TRG_BLINK,0,blinkLED, NULL); /* 	TRG_Blink defined in Trigger.h
+	 	 	 	 	 	 	 	 	 	 	 	 	 blinkLED function in application */
 	for(;;){
 	  EVNT_HandleEvent(APP_EventHandler, TRUE);
 	}
