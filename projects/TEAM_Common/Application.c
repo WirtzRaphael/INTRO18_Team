@@ -206,10 +206,32 @@ void APP_Start(void) {
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
 
+  /*
+   * RTOS
+   * - RTOS_Init() 	called in PL_Init();
+   */
+
+  /* ------------------------------------------------------------
+   * KERNEL CONTROL
+   * - FreeRTOS API to control the kernel
+   * - kernel states (init, running, suspended)
+ 	 ------------------------------------------------------------ */
+//  vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
+//  vTaskEndScheduler();		/* stops scheduler, release kernel rescources, task resources (queues, semaphores) are not freed */
+//  vTaskSuspendAll();			/* kernel suspending, from active to supsended state, intrrupts remain enabled, prevents context switch */
+//  xTaskResumeAll();			/* kernel resuming, from suspended to active state */
+//  taskYIELD();				/* passing control to one of the ready tasks, request context switch with software interrupt */
+//  taskENTER_CRITICAL();		/* enter critical section, preemptive context switches cannot occur in CS */
+//  taskEXIT_CRITICAL();		/* exit critical section */
+//  taskDISABLE_INTERRUPTS();	/* macro */
+//  taskENABLE_INTERRUPTS(); 	/* macro */
+
+
   EVNT_SetEvent(EVNT_STARTUP);
 
+  //RTOS_init(); // in PL_Init already
   for(;;){
-	  KEY_scan();
+	  //EVNT_HandleEvent(APP_EventHandler, TRUE); // Event
   }
 
 }
