@@ -248,6 +248,16 @@ static void taskTwo(void *pvParameters){
 	}
 }
 
+static void taskZork(void *pvParameters){
+
+	for(;;){
+		vTaskDelay(50/portTICK_RATE_MS);
+		 if(SW1_GetVal()==0){
+			run_zork_game();
+		}
+	}
+}
+
 /* --------------------------------------------------
  * APP
  * -------------------------------------------------- */
@@ -278,13 +288,25 @@ void APP_Start(void) {
   );//>> create task
   if (res!=pdPASS){ /* error handling */ }
 
-  // ----- | task 2| -----
+//  // ----- | task 2| -----
+//  if(xTaskCreate(
+//	  taskTwo,
+//	  "taskTwo",
+//	  500/sizeof(StackType_t),
+//	  (void*) NULL,
+//	  tskIDLE_PRIORITY+2,
+//	  &taskHndl
+//  )!=pdPASS){
+//	  /* error handling */
+//  }
+
+  // ----- | task Zork| -----
   if(xTaskCreate(
-	  taskTwo,
-	  "taskTwo",
-	  500/sizeof(StackType_t),
+	  taskZork,
+	  "taskZork",
+	  18000/sizeof(StackType_t),
 	  (void*) NULL,
-	  tskIDLE_PRIORITY+2,
+	  tskIDLE_PRIORITY+1,
 	  &taskHndl
   )!=pdPASS){
 	  /* error handling */
@@ -293,11 +315,14 @@ void APP_Start(void) {
   //---
   vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
 
+  zork_config();
   // ==========  [ loop ] ==========
   for(;;){
-	  //EVNT_HandleEvent(APP_EventHandler, TRUE);
-	  //vTaskSuspendAll();	/* suspend all tasks */
+	  EVNT_HandleEvent(APP_EventHandler, TRUE);
+	  //vTaskSuspendAll();		/* suspend all tasks */
 	  //xTaskResumeAll();		/* resume all tasks */
+
+
 
   }
 }
