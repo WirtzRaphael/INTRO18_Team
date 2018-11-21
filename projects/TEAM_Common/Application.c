@@ -226,17 +226,24 @@ void KEY_scan(void){
  * is called, vTaskDelayUntil () specifies the absolute (exact) time at which it wishes to
  * unblock.
  -------------------------------------------------- */
-static void firstTask(void *pvParameters){
-	(void)pvParameters;	//cast
+static void taskOne(void *pvParameters){
+	(void)pvParameters;	//cast, necessary?
 
 	// ========== [ start sequency ] ==========
-	BUZ_Beep(300,1000);
+	//BUZ_Beep(300,1000);
 	TRG_SetTrigger(TRG_BLINK,0,blinkLED, NULL);
 
 	// ========== [ loop ] ==========
 	for(;;){
 		vTaskDelay(500/portTICK_RATE_MS);
 		EVNT_HandleEvent(APP_EventHandler, TRUE);
+	}
+}
+
+static void taskTwo(void *pvParameters){
+	BUZ_Beep(300,1000);
+	for(;;){
+
 	}
 }
 
@@ -256,20 +263,37 @@ void APP_Start(void) {
   // ApplicationMallocFailedHook => increase heap size
   xTaskHandle taskHndl;
 
+  // ----- | task 1| -----
   //<< create task
   BaseType_t res;
   res = xTaskCreate(
-	firstTask,			/* function */
-	"firstTask",		/* kernel awareness name */
+	taskOne,						/* function */
+	"taskOne",						/* kernel awareness name */
 	//configMINIMAL_STACK_SIZE+120,	/* stack */
 	500/sizeof(StackType_t),
-	(void*) NULL, 		/* task parameter */
-	tskIDLE_PRIORITY, 	/* priority */
-	&taskHndl 			/* handle */
+	(void*) NULL, 					/* task parameter */
+	tskIDLE_PRIORITY, 				/* priority */
+	&taskHndl 						/* handle */
   );//>> create task
   if (res!=pdPASS){ /* error handling */ }
 
+  // ----- | task 2| -----
+  if(xTaskCreate(
+	  taskTwo,
+	  "taskTwo",
+	  500/sizeof(StackType_t),
+	  (void*) NULL,
+	  tskIDLE_PRIORITY+2,
+	  &taskHndl
+  )!=pdPASS){
+	  /* error handling */
+  }
+
+
+
+  //---
   vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
+
 
   // ==========  [ loop ] ==========
   for(;;){
@@ -310,8 +334,8 @@ void assignment19frtos_task(void){
 	  //<< create task
 	  BaseType_t res;
 	  res = xTaskCreate(
-		firstTask,			/* function */
-		"firstTask",		/* kernel awareness name */
+		taskOne,			/* function */
+		"taskOne",		/* kernel awareness name */
 		//configMINIMAL_STACK_SIZE+120,	/* stack */
 		500/sizeof(StackType_t),
 		(void*) NULL, 		/* task parameter */
