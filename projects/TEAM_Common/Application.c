@@ -249,12 +249,59 @@ static void taskTwo(void *pvParameters){
 }
 
 static void taskZork(void *pvParameters){
-
+	char stateGame = 0;
+	uint8_t ch;
+	//char buf [32];
 	for(;;){
 		vTaskDelay(50/portTICK_RATE_MS);
-		 if(SW1_GetVal()==0){
-			run_zork_game();
+
+		/* ========== [ state machien - game ] ========== */
+		if(stateGame == 0){			/* send information */
+
+			CLS1_SendStr("press key 'y' to start \n", CLS1_GetStdio()->stdOut);
+			stateGame += 1;
 		}
+		else if(stateGame == 1){	/* read input */
+			//if(SW1_GetVal()==0){ 					/* start with button */
+			if(CLS1_GetStdio()->keyPressed()>0){ 	/* start with shell, read key */
+				//uint8_t ch;							// moved
+				CLS1_GetStdio()->stdIn(&ch);
+				//if(ch!='\0'){							// not used - optional safety check
+				if(ch == 'y'){							// check key
+					CLS1_GetStdio()->stdOut(ch);
+					stateGame += 1;
+				}else{
+					ch = 0;
+				}
+			}
+		}
+		else if(stateGame == 2){	/* game */
+			zork_config();
+		 	run_zork_game();
+			stateGame = 0;
+		}
+		else{
+			/* error handling */
+		}
+		/* ========== [ CLS1 ] ========== */
+		//CLS1_KeyPressed();		/* returns only, if something in the buffer */
+		//CLS1_ReadChar(&a);		/* blocks, waits until button pressed */
+		//CLS2_ReadLine();			/* blocks, read line until ('\r','\n') received */
+
+		/* ========== [ graveyard  ] ==========
+		 *  here lie my hopeless attempts
+		*/
+		//uint8_t a[48];
+		//uint8_t b = 8;
+		//UTIL1_Num8uToStr(buffer_value,sizeof(buffer_value),b);
+		//uint8_t a;
+		//char buf [32];
+		//if(CLS1_KeyPressed()){ // doesn't work !
+			//	CLS1_ReadChar(buf);
+			//	stateGame += 1;
+		//}
+		//if(!strcmp(a,"b")){
+		//if(strcmp(*(CLS1_GetStdio()),'a') == TRUE){
 	}
 }
 
@@ -313,9 +360,12 @@ void APP_Start(void) {
   }
 
   //---
-  vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
 
-  zork_config();
+
+  vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
+  //--wait in scheduler?
+
+
   // ==========  [ loop ] ==========
   for(;;){
 	  EVNT_HandleEvent(APP_EventHandler, TRUE);

@@ -3,7 +3,7 @@
   <Header>
     <Name>TEAM_Robot</Name>
     <SavedBy>Erich Styger</SavedBy>
-    <ModificationStamp>255</ModificationStamp>
+    <ModificationStamp>256</ModificationStamp>
     <Date>2016-02-29</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -22072,7 +22072,7 @@
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <Value>true</Value>
-        <Expanded>false</Expanded>
+        <Expanded>true</Expanded>
       </ItemState>
       <ItemState>
         <ItemSymbol>ApplicationAllocatedHeap</ItemSymbol>
@@ -22087,8 +22087,8 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>4096</Value>
-        <Base>DEC</Base>
+        <Value>20480</Value>
+        <Base>HEX</Base>
       </ItemState>
       <ItemState>
         <ItemSymbol>LinkerHeapBaseSymbolName</ItemSymbol>
