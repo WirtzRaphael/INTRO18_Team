@@ -243,7 +243,8 @@ static void taskOne(void *pvParameters){
 static void taskTwo(void *pvParameters){
 	BUZ_Beep(300,1000);
 	for(;;){
-
+		vTaskDelay(500/portTICK_RATE_MS);
+		//CLS1_SendStr("a", CLS1_GetStdio()->stdOut);
 	}
 }
 
@@ -289,18 +290,16 @@ void APP_Start(void) {
 	  /* error handling */
   }
 
-
-
   //---
   vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
-
 
   // ==========  [ loop ] ==========
   for(;;){
 	  //EVNT_HandleEvent(APP_EventHandler, TRUE);
+	  //vTaskSuspendAll();	/* suspend all tasks */
+	  //xTaskResumeAll();		/* resume all tasks */
 
   }
-
 }
 
 /* --------------------------------------------------
