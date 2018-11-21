@@ -6,15 +6,34 @@ zork
 - FreeRTOS component: enable 'use User memory section' ==> Memory in second bank
 - Memory size is wrong in PEx: we have 128 KByte :-)
   a) In the CPU component, Build Options, disabe generation of linker file
-  b) extend the two 32KByte RAM blocks to 64 KByte in the linker file (Project Settings > Linker_Files)
-  m_data      (RW) : ORIGIN = 0x1fff0000, LENGTH = 0x10000
-  m_data_20000000 (RW) : ORIGIN = 0x20000000, LENGTH = 0x10000
+ 
 
+  b) extend the two 32KByte RAM blocks to 64 KByte in the linker file (Project Settings > Linker_Files)
+    - "Project Settings" is a folder in the project !
+    - orignal (backup)
+        m_data      (RW) : ORIGIN = 0x1FFF8000, LENGTH = 0x00008000
+        m_data_20000000 (RW) : ORIGIN = 0x20000000, LENGTH = 0x00008000
+
+    - new values
+        m_data      (RW) : ORIGIN = 0x1fff0000, LENGTH = 0x10000
+        m_data_20000000 (RW) : ORIGIN = 0x20000000, LENGTH = 0x10000
+
+      c) additionally, change the heap size to
+         __heap_size = 0x5000;
+          - in *.Id file, because generation of linker file disabled
+    
 - semihosting:
    a) In the linker setting for the project (Cross ARM C++ Linker > Miscellaneous),
    replace '-specs=nosys.specs' with '-specs=rdimon.specs'
+      - properties for TEAM_Robot,C/C++ Build, Settings, Cross ARM C++ Linker/Miscellaneous
+      - Other linker flags: 
+        change: -specs=nano.specs -specs=nosys.specs 
+        new: -specs=rdimon.specs
+
    b) In the launch configuration, enable Semihosting (launch configuration, Startup Tab)
    See: https://mcuoneclipse.com/2015/05/27/semihosting-for-kinetis-design-studio-v3-0-0-and-gnu-arm-embedded-launchpad/
+
+      - => Semihosting thread visible in ‘Debug’
 
 - init and start the game:
   zork_config(); /* initializes the game */
@@ -28,4 +47,8 @@ Hints:
   - suspend/resume tasks?
   - overwrite/replace _exit(): the game exits that way
 
+
+  RTT connection failure:
+  - watch "&_SEGGER_RTT" in debug and get adress
+  - "SEGGER J-Link - Control Panel" (separate program), tab RTT, add RTT address and start.
   
