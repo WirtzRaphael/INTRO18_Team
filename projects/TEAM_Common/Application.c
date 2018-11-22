@@ -248,6 +248,14 @@ static void taskTwo(void *pvParameters){
 	}
 }
 
+/* --------------------------------------------------
+ * Zork
+ * - ACHTUNG
+ * 		- Dieser Task laeuft parallel zum Task Shell und verwendet die selbe Rescource!
+ * 		- Moeglicher Ansatz: Sonderzeichen vor Befehl, damit Unterschied zwischen den Tasks (nicht implementiert)
+ * - strcmp
+ * 		- string compare bei einem char nicht noetig
+ * --------------------------------------------------*/
 static void taskZork(void *pvParameters){
 	char stateGame = 0;
 	uint8_t ch;
