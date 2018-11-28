@@ -118,34 +118,34 @@
 \section{Reflectance} % Section
 %------------------------------------------------
 \begin{frame}
-	\frametitle{Reflectance}
+	\frametitle{Line following}
 	\begin{itemize}
-	\item IR-LED is used as a transmitters
-	\item Phototransistor is used as an receiver 
+		\item{Liniensensor, für Position auf der Linie}
+		\item{Motor}
+		\item{PID, um auf der Linie zu bleiben}
+		\item{Quadratur Encoder, zur Bestimmung von Position und Geschwindigkeit}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Sensor für Linienerkennung}
+	\begin{itemize}
+		\item{IR-LED als Sender}
+		\item{Phototransistor als Empfänger}
+		\item{Unterschiedliche IR Reflexion}
+		\begin{itemize}
+			\item{Unterscheidung zwischen Schwarz und Weiss möglich}
+		\end{itemize}
+		\item{Energieversorgung über Akkumulatoren}
 	\end{itemize}
 	%\begin{figure}
 	\includegraphics[height=3cm]{test.png}
 	%\end{figure}
 \end{frame}
-\begin{frame}
-	\frametitle{Line following}
-
-	\begin{itemize}
-		\item{Liniensensor, für Position auf der Linie}
-		\item{Motor}
-		\item{PID, um auf der Linie zu bleiben}
-	\end{itemize}
-\end{frame}
-
 
 \begin{frame}
 	\frametitle{Sensor für Linienerkennung}
 	\begin{itemize}
-		\item{IR LED und Phototransistor}
-		\item{Unterschiedliche IR Reflexion}
-		\begin{itemize}
-			\item{Unterscheidung zwischen Schwarz und Weiss möglich}
-		\end{itemize}
 		\item{Analoge Entladeschaltung !!!!Folie S11 abgleichen!!!!}
 		\item{Transistoren werden über ein Array angesteuert}
 		\begin{itemize}
@@ -163,6 +163,23 @@
 
 \begin{frame}
 	\frametitle{Datenverarbeitung}
+	\begin{itemize}
+		\item{Task oder Prozess für Sensor}
+		\item{Periodisches sampling, oder auf Abfrage}
+		\item{Kalibration}
+		\begin{itemize}
+			\item{Event für Kalibration}
+			\item{Kalibrationsdaten im RAM gespeichert}
+			\begin{itemize}
+				\item{Nach jedem Neustart erneut Kalibration nötig}
+				\item{Kalibrationdaten in Flash verschieben}
+			\end{itemize}
+			\item{}
+		\end{itemize}
+		\item{State-machine in Hauptapplikation}
+	\end{itemize}
+
+
 	Task or Process für Sensor
 	periodic sampling or on demand
 	Event für Kalibration
@@ -177,33 +194,55 @@
 \section{Motor signals} % Section
 %------------------------------------------------
 \begin{frame}
-	\frametitle{Motor signals}
+	\frametitle{Motoren}
+	Geschwindikeit proportional zur Spannung (Leerlauf, unbelastet)
+		Störgrössen: Mechanische Belastung und Aufbau
+	Ziel deshalb: Regler
+
+	H-Brücke (Individuelle Ansteuerung der Transistoren, exaktes Timing)
 
 	%\begin{figure}
 	%\includegraphics[width=0.8\linewidth]{test}
 	%\end{figure}
-
-
-
-
 	
 \end{frame}
-%------------------------------------------------
-\section{Position encoder} % Section
-%------------------------------------------------
+
 \begin{frame}
-	\frametitle{Position encoder}
-	
+	\frametitle{H-Brücke}
+	PWM, DIR, Motor.c
+
+	DIR, direction
+	PWM, (Voltage, Speed)
+	others (emergency stop / Notbremse T2, T4 auf GND leitend NICHT IMPLEMENTIERT ? GRUND?)
+	für jeden Motor eine H-Brücke (über dual H-Bridge)
+
+	Treiber ansteuerung:
+		MODER über HW auf 1 (slide 10)
+		MODE 0: coast mode ???????
+		MODE 1:
+			PWM on (Pin ENABLE): speed
+			PHASE forward/backward
+
+% 	Störungen: Spannungsabfall (bei V1) Stützkondensatoren
+
 \end{frame}
-%------------------------------------------------
-\section{Quadrature encoder} % Section
-%------------------------------------------------
+
 \begin{frame}
-	\frametitle{Quadrature encoder}
-	
+		\frametitle{Motor Interface}
+		MOT\_Direction
+		MOT\_MotorSide
+		%*MOT_GetMotorHandle(MOT_MotorSide side)
+
+		MOT\_SetDirection
+		MOT\_SetSpeedPercent
+
+		speed: (-100\% zu 100\%)
+		PWM: (0x0000-0xffff)
+		DIR: (boolean)
+
+		currSpeeedPercent: ist nicht die relative Geschwindigkeit gegenüber Grund.
+
 \end{frame}
-
-
 %------------------------------------------------
 \begin{frame}
 \Huge{\centerline{The End}}
@@ -212,7 +251,7 @@
 
 
 %------------------------------------------------
-\section{examples} % Section
+%\section{examples} % Section
 %------------------------------------------------
 \begin{frame}
 \frametitle{Paragraphs of Text}
@@ -270,10 +309,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ul
 
 \end{columns}
 \end{frame}
-
-%------------------------------------------------
-\section{Second Section}
-%------------------------------------------------
 
 \begin{frame}
 	\frametitle{Table}
