@@ -106,7 +106,7 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Übersicht} % TOC slide
+\frametitle{Inhaltsverzeichnis} % TOC slide
 \tableofcontents %  \section{} and \subsection{} commands,  automatically printed on this slide
 \end{frame}
 
@@ -115,10 +115,10 @@
 % ------------------------------------------------------------
 
 %------------------------------------------------
-\section{Reflectance} % Section
+\section{Übersicht} % Section
 %------------------------------------------------
 \begin{frame}
-	\frametitle{Line following}
+	\frametitle{Übersicht}
 	\begin{itemize}
 		\item{Liniensensor, für Position auf der Linie}
 		\item{Motor}
@@ -127,244 +127,182 @@
 	\end{itemize}
 \end{frame}
 
+%------------------------------------------------
+\section{IR Sensor} % Section
+%------------------------------------------------
 \begin{frame}
-	\frametitle{Sensor für Linienerkennung}
+	\frametitle{IR Sensor}
 	\begin{itemize}
-		\item{IR-LED als Sender}
-		\item{Phototransistor als Empfänger}
+		\item{Sender: IR-LED}
+		\item{Empfänger: Phototransistor}
 		\item{Unterschiedliche IR Reflexion}
 		\begin{itemize}
-			\item{Unterscheidung zwischen Schwarz und Weiss möglich}
+			\item{Unterscheidung zwischen Schwarz und Weiss}
 		\end{itemize}
 		\item{Energieversorgung über Akkumulatoren}
 	\end{itemize}
-	%\begin{figure}
-	\includegraphics[height=3cm]{test.png}
+
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.6\linewidth]{figure/linefollowing_sensor_irLed_phototr.PNG}
+	\end{figure}
+
 	%\end{figure}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Sensor für Linienerkennung}
+	\frametitle{IR Sensor}
 	\begin{itemize}
-		\item{Analoge Entladeschaltung !!!!Folie S11 abgleichen!!!!}
+		%\item{Analoge Entladeschaltung !!!!Folie S11 abgleichen!!!!}
 		\item{Transistoren werden über ein Array angesteuert}
 		\begin{itemize}
 			\item{Array ein-/ausschalten mit $IR\_LED\_ON$}
 		\end{itemize}
 	\end{itemize}
-	\begin{itemize}
-		\item{Störquellen}
+
+	\begin{itemize}	
+		\item{Störgrössen}
 		\begin{itemize}
-			\item{Crosstalk, IR LED sendet an falschen Transistor}
+			\item{Crosstalk: IR LED sendet an falschen Transistor}
 			\item{Externe Lichteinstreuung}
 		\end{itemize}
 	\end{itemize}
+
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.6\linewidth]{figure/linefollowing_disturbance.PNG}
+	\end{figure}
 \end{frame}
+
+% \begin{frame}
+% 	\frametitle{Rohdaten und Kalibrierung}
+% 	\begin{block}{Rohdaten}
+% 		\begin{itemize}
+% 			\item{Wert von Timer zwischen 0x0000 - 0xFFFF}
+% 		\end{itemize}
+% 	\end{block}
+
+% 	\begin{block}{Kalibrierung}
+% 		\begin{itemize}
+% 			\item{Werte von Timer skalieren }
+% 			\begin{itemize}
+% 				\item{min Wert $\Rightarrow$ 0}
+% 				\item{max Wert $\Rightarrow$ 1000}
+% 			\end{itemize}
+% 			\item{Neue Wertebereich zwischen 0 - 1000}
+% 		\end{itemize}
+% 	\end{block}
+% \end{frame}
 
 \begin{frame}
-	\frametitle{Datenverarbeitung}
+	\frametitle{Implementation}
 	\begin{itemize}
-		\item{Task oder Prozess für Sensor}
-		\item{Periodisches sampling, oder auf Abfrage}
+		\item{Task, oder Prozess für Sensor}
+		\item{Periodisches sampling, oder auf Abfrage\\
+		$\Rightarrow$ Periodisches sampling für vorsehbares Systemverhalten (stabiles System)}
 		\item{Kalibration}
 		\begin{itemize}
-			\item{Event für Kalibration}
-			\item{Kalibrationsdaten im RAM gespeichert}
+			\item{In Event}
+			\item{Daten im RAM gespeichert}
 			\begin{itemize}
-				\item{Nach jedem Neustart erneut Kalibration nötig}
-				\item{Kalibrationdaten in Flash verschieben}
+				\item{Nach jedem Neustart erneut Kalibration nötig \\
+				$\Rightarrow$ Kalibrationdaten in Flash verschieben (nicht flüchtig)}
 			\end{itemize}
-			\item{}
 		\end{itemize}
-		\item{State-machine in Hauptapplikation}
+		%\item{State-machine (in Hauptapplikation)}
+
 	\end{itemize}
-
-
-	Task or Process für Sensor
-	periodic sampling or on demand
-	Event für Kalibration
-	state-machine in main app
+	% Task or Process für Sensor
+	% periodic sampling or on demand
+	% Event für Kalibration
+	% state-machine in main app
 \end{frame}
-
-\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
-
 
 
 %------------------------------------------------
-\section{Motor signals} % Section
+\section{Motoren \& H-Brücke} % Section
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Motoren}
-	Geschwindikeit proportional zur Spannung (Leerlauf, unbelastet)
-		Störgrössen: Mechanische Belastung und Aufbau
-	Ziel deshalb: Regler
+	\begin{itemize}
+		\item{Geschwindikeit proportional zur Spannung (ohne Störgrössen)}
+		\item{Störgrössen}
+		\begin{itemize}
+			\item{Mechanische Belastung}
+			\item{Toleranzen im Antriebsstrang}
+		\end{itemize}
+	\end{itemize}
 
-	H-Brücke (Individuelle Ansteuerung der Transistoren, exaktes Timing)
-
-	%\begin{figure}
-	%\includegraphics[width=0.8\linewidth]{test}
-	%\end{figure}
+	\begin{exampleblock}{}
+		\centering
+		$\Rightarrow$ Regler
+	\end{exampleblock}
 	
 \end{frame}
 
 \begin{frame}
 	\frametitle{H-Brücke}
-	PWM, DIR, Motor.c
 
-	DIR, direction
-	PWM, (Voltage, Speed)
-	others (emergency stop / Notbremse T2, T4 auf GND leitend NICHT IMPLEMENTIERT ? GRUND?)
-	für jeden Motor eine H-Brücke (über dual H-Bridge)
+	\begin{block}{Treiber IC (Dual H-Brücke) }
+		\begin{itemize}
+			\item{x = H-Bridge A,B\dots}
+			\item{xENABLE: speed, via PWM}
+			\item{xPHASE: direction, Vorwärts (1) und Rückwärts (0)}
+			\item{MODE über Hardware auf 1 gesetzt}
+		\end{itemize}
+	\end{block}
 
-	Treiber ansteuerung:
-		MODER über HW auf 1 (slide 10)
-		MODE 0: coast mode ???????
-		MODE 1:
-			PWM on (Pin ENABLE): speed
-			PHASE forward/backward
 
-% 	Störungen: Spannungsabfall (bei V1) Stützkondensatoren
+	\begin{block}{Treiber Ansteuerung (motor.c)}
+		 \begin{itemize}
+	 		\item{xPHASE $\Leftarrow$ PWM}
+	 		\item{xENABLE $\Leftarrow$ DIR}
+	 		\item{Individuelles Ansteuern der Transistoren, exaktes Timing}
+		 \end{itemize}
+	\end{block}
 
+
+	\begin{alertblock}{}
+		Robo V1: Stützkondensatoren zu gering\\
+		$\Rightarrow$ Spannungsversorgung sinkt bei Belastung.
+	\end{alertblock}
+	% others (emergency stop / Notbremse T2, T4 auf GND leitend NICHT IMPLEMENTIERT ? GRUND?)
+	% für jeden Motor eine H-Brücke (über dual H-Bridge)
 \end{frame}
 
 \begin{frame}
-		\frametitle{Motor Interface}
-		MOT\_Direction
-		MOT\_MotorSide
+		\frametitle{motor.c Interface}
+		% \begin{block}{typedef enum}
+		% 	MOT\_Direction : forward, backward\\
+		% 	MOT\_MotorSide : left, right
+		% 	% \begin{itemize}
+		% 	% 	\item{MOT\_Direction : forward, backward}
+		% 	% 	\item{MOT\_MotorSide : left, right }
+		% 	% \end{itemize}
+		% \end{block}
+		
+		\begin{block}{Funktionen}
+			MOT\_SetDirection : DIR (boolean)\\
+			MOT\_SetSpeedPercent : percent (0-100)
 		%*MOT_GetMotorHandle(MOT_MotorSide side)
+		\end{block}
 
-		MOT\_SetDirection
-		MOT\_SetSpeedPercent
-
-		speed: (-100\% zu 100\%)
-		PWM: (0x0000-0xffff)
-		DIR: (boolean)
-
-		currSpeeedPercent: ist nicht die relative Geschwindigkeit gegenüber Grund.
+		\begin{block}{}
+			Gemeinsamer Wert für Geschwindikeit und Richtung\\ $\Rightarrow$ speed: (-100\% zu 100\%)
+			\begin{itemize}
+				\item{PWM: (0x0000-0xffff)}
+				\item{DIR: (boolean)}
+			\end{itemize}
+			%%currSpeeedPercent: ist nicht die relative Geschwindigkeit gegenüber Grund!
+		\end{block}
+		\begin{alertblock}{}
+			currSpeeedPercent: ist nicht die relative Geschwindigkeit gegenüber Grund!
+		\end{alertblock}
 
 \end{frame}
 %------------------------------------------------
 \begin{frame}
-\Huge{\centerline{The End}}
+	\Huge{\centerline{Outro}}
 \end{frame}
 
-
-
-%------------------------------------------------
-%\section{examples} % Section
-%------------------------------------------------
-\begin{frame}
-\frametitle{Paragraphs of Text}
-Sed iaculis dapibus gravida. Morbi sed tortor erat, nec interdum arcu. Sed id lorem lectus. Quisque viverra augue id sem ornare non aliquam nibh tristique. Aenean in ligula nisl. Nulla sed tellus ipsum. Donec vestibulum ligula non lorem vulputate fermentum accumsan neque mollis.\\~\\
-
-Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. Aliquam vel dui orci, a porta odio. Nullam id suscipit ipsum. Aenean lobortis commodo sem, ut commodo leo gravida vitae. Pellentesque vehicula ante iaculis arcu pretium rutrum eget sit amet purus. Integer ornare nulla quis neque ultrices lobortis. Vestibulum ultrices tincidunt libero, quis commodo erat ullamcorper id.
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Bullet Points}
-\begin{itemize}
-\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus eu
-\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
-\item Nam cursus est eget velit posuere pellentesque
-\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
-\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Blocks of Highlighted Text}
-\begin{block}{Block 1}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-\end{block}
-
-\begin{block}{Block 2}
-Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
-\end{block}
-
-\begin{block}{Block 3}
-Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
-\end{block}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Multiple Columns}
-\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-
-\column{.45\textwidth} % Left column and width
-\textbf{Heading}
-\begin{enumerate}
-\item Statement
-\item Explanation
-\item Example
-\end{enumerate}
-
-\column{.5\textwidth} % Right column and width
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-
-\end{columns}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Table}
-	\begin{table}
-	\begin{tabular}{l l l}
-	\toprule
-	\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-	\midrule
-	Treatment 1 & 0.0003262 & 0.562 \\
-	Treatment 2 & 0.0015681 & 0.910 \\
-	Treatment 3 & 0.0009271 & 0.296 \\
-	\bottomrule
-	\end{tabular}
-	\caption{Table caption}
-	\end{table}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Theorem - Verbatim}
-
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-
-\begin{example}[Theorem Slide Code]
-\begin{verbatim}
-\begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-\end{frame}\end{verbatim}
-\end{example}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Figure}
-Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-%\begin{figure}
-%\includegraphics[width=0.8\linewidth]{test}
-%\end{figure}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Citation}
-An example of the \verb|\cite| command to cite within the presentation:\\~
-
-This statement requires citation \cite{p1}.
-\end{frame}
-
-
-
-\end{document} 
+\end{document}
