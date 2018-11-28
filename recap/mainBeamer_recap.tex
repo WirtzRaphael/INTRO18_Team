@@ -284,7 +284,7 @@
 		
 		\begin{block}{Funktionen}
 			MOT\_SetDirection : DIR (boolean)\\
-			MOT\_SetSpeedPercent : percent (0-100)
+			MOT\_SetSpeedPercent : percent ($\pm$0-100) % +/- IST NICHT KORREKT (BUG FUER PRAESENTATION ;)
 		%*MOT_GetMotorHandle(MOT_MotorSide side)
 		\end{block}
 
@@ -294,10 +294,10 @@
 				\item{PWM: (0x0000-0xffff)}
 				\item{DIR: (boolean)}
 			\end{itemize}
-			%%currSpeeedPercent: ist nicht die relative Geschwindigkeit gegenüber Grund!
 		\end{block}
+
 		\begin{alertblock}{}
-			currSpeeedPercent: ist nicht die relative Geschwindigkeit gegenüber Grund!
+			currSpeeedPercent: ist nicht die relative Geschwindigkeit gegenüber Unterboden!
 		\end{alertblock}
 \end{frame}
 %------------------------------------------------
@@ -328,6 +328,13 @@
 		\item{Wieso wird eine Kalibierung gemacht?}
 		\\$\Rightarrow$ Normalisierte Werte
 	\end{enumerate}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+	\begin{exampleblock}{Bug}
+	\centering
+		MOT\_SetSpeedPercent : percent (\textcolor{red}{$\pm$} 0-100)
+	\end{exampleblock}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
