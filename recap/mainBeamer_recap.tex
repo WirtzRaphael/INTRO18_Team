@@ -156,7 +156,7 @@
 		%\item{Analoge Entladeschaltung !!!!Folie S11 abgleichen!!!!}
 		\item{Transistoren werden über ein Array angesteuert}
 		\begin{itemize}
-			\item{Array ein-/ausschalten mit $IR\_LED\_ON$}
+			\item{Array ein-/ausschalten über Port $IR\_LED\_ON$ (via Jumper)}
 		\end{itemize}
 	\end{itemize}
 
@@ -202,7 +202,8 @@
 		$\Rightarrow$ Periodisches sampling für vorsehbares Systemverhalten (stabiles System)}
 		\item{Kalibration}
 		\begin{itemize}
-			\item{In Event}
+			\item{min und max Werte skalieren zwischen 0 und 1000}
+			\item{In Event, auf externen Befehl (Button, \dots)}
 			\item{Daten im RAM gespeichert}
 			\begin{itemize}
 				\item{Nach jedem Neustart erneut Kalibration nötig \\
@@ -298,7 +299,35 @@
 		\begin{alertblock}{}
 			currSpeeedPercent: ist nicht die relative Geschwindigkeit gegenüber Grund!
 		\end{alertblock}
-
+\end{frame}
+%------------------------------------------------
+\section{Fragen} % Section
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Fragen}
+	\begin{enumerate}
+		\item{Weshalb kann der Motor nicht direkt mit einem PWM angesteuert werden?}
+		\item{Welche Eingänge vom H-Brücken Treiber IC werden benötigt?}
+		\item{Was ist der Vorteil, wenn die relative Geschwindikeit (\%)verwendet wird?}
+		\item{Was muss aktiviert werden, damit die Phototransistoren verwendet werden können (Hardware)?}
+		\item{Wieso wird eine Kalibierung gemacht?}
+	\end{enumerate}
+\end{frame}
+%------------------------------------------------
+\begin{frame}
+	\frametitle{Fragen \& Antworten}
+	\begin{enumerate}
+		\item{Weshalb kann der Motor nicht direkt mit einem PWM angesteuert werden?}
+		\\$\Rightarrow$ Ausgang liefert zu wenig Leistung.
+		\item{Welche Eingänge vom H-Brücken Treiber IC werden von der Software angesteuert?}
+		\\$\Rightarrow$ xENABLE, xPHASE
+		\item{Was ist der Vorteil, wenn die relative Geschwindikeit (\%) verwendet wird?}
+		\\$\Rightarrow$ Modularität, Relation zwischen Wirklichkeit und Software
+		\item{Was muss aktiviert werden, damit die Phototransistoren verwendet werden können (Hardware)?}
+		\\$\Rightarrow$ Sensor Array, Port $IR\_LED\_ON$ via Jumper setzen.
+		\item{Wieso wird eine Kalibierung gemacht?}
+		\\$\Rightarrow$ Normalisierte Werte
+	\end{enumerate}
 \end{frame}
 %------------------------------------------------
 \begin{frame}
