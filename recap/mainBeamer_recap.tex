@@ -127,6 +127,48 @@
 	\includegraphics[height=3cm]{test.png}
 	%\end{figure}
 \end{frame}
+\begin{frame}
+	\frametitle{Line following}
+
+	\begin{itemize}
+		\item{Liniensensor, für Position auf der Linie}
+		\item{Motor}
+		\item{PID, um auf der Linie zu bleiben}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Sensor für Linienerkennung}
+	\begin{itemize}
+		\item{IR LED und Phototransistor}
+		\item{Unterschiedliche IR Reflexion}
+		\begin{itemize}
+			\item{Unterscheidung zwischen Schwarz und Weiss möglich}
+		\end{itemize}
+		\item{Analoge Entladeschaltung !!!!Folie S11 abgleichen!!!!}
+		\item{Transistoren werden über ein Array angesteuert}
+		\begin{itemize}
+			\item{Array ein-/ausschalten mit $IR\_LED\_ON$}
+		\end{itemize}
+	\end{itemize}
+	\begin{itemize}
+		\item{Störquellen}
+		\begin{itemize}
+			\item{Crosstalk, IR LED sendet an falschen Transistor}
+			\item{Externe Lichteinstreuung}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Datenverarbeitung}
+	Task or Process für Sensor
+	periodic sampling or on demand
+	Event für Kalibration
+	state-machine in main app
+\end{frame}
+
 \subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
 
@@ -136,13 +178,21 @@
 %------------------------------------------------
 \begin{frame}
 	\frametitle{Motor signals}
+
+	%\begin{figure}
+	%\includegraphics[width=0.8\linewidth]{test}
+	%\end{figure}
+
+
+
+
 	
 \end{frame}
 %------------------------------------------------
 \section{Position encoder} % Section
 %------------------------------------------------
 \begin{frame}
-	
+	\frametitle{Position encoder}
 	
 \end{frame}
 %------------------------------------------------
