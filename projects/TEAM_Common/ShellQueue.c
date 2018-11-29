@@ -10,6 +10,7 @@
 #if PL_CONFIG_HAS_SHELL_QUEUE
 #include "ShellQueue.h"
 #include "FRTOS1.h"
+#include "UTIL1.h"
 
 static xQueueHandle SQUEUE_Queue;
 
