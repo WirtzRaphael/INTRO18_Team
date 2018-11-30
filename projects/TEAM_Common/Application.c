@@ -357,9 +357,8 @@ void APP_Start(void) {
 //  }
 
   // ----- | task Zork| -----
-  zorkTask(taskHndl);
+  //zorkTask(taskHndl);
   //---
-
 
   vTaskStartScheduler();		/* starts scheduler, creates IDLE task */
   //--wait in scheduler?
@@ -370,9 +369,6 @@ void APP_Start(void) {
 	  EVNT_HandleEvent(APP_EventHandler, TRUE);
 	  //vTaskSuspendAll();		/* suspend all tasks */
 	  //xTaskResumeAll();		/* resume all tasks */
-
-
-
   }
 }
 
