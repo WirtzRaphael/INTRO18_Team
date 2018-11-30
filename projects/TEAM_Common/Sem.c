@@ -24,55 +24,58 @@ static xSemaphoreHandle sem = NULL;
 
 static void vSlaveTask(void *pvParameters) {
   /*! \todo Implement functionality */
+	// ========== [ loop ] ==========
 	for(;;){
 		xSemaphoreTake(sem,10);
 		LED2_Neg();
 	}
-	//xMutex = xSemaphoreCreateMutex();
+	//xMutex = xSemaphoreCreateMutex(); not used
 
 }
 
 static void vMasterTask(void *pvParameters) {
   /*! \todo send semaphore from master task to slave task */
-	//xSemaphoreCreateBinary();
-	//xMutex = xSemaphoreCreateMutex();
-	for(;;){
-		xSemaphoreGive(sem);
-		vTaskDelay(500/portTICK_RATE_MS);
-	}
-
+	xTaskHandle taskHndlSem2;
+	sem = xSemaphoreCreateBinary();
+	//xMutex = xSemaphoreCreateMutex(); not used
+	// ========== [ task - slave ] ==========
+	  if(xTaskCreate(
+		  vSlaveTask,						/* function */
+		  "vSlaveTask",						/* kernel awareness name */
+		  configMINIMAL_STACK_SIZE+50,		/* stack */
+		  sem,								/* task parameter */
+		  tskIDLE_PRIORITY+2,				/* priority */
+		  &taskHndlSem2						/* handle */
+	  )!=pdPASS){
+		  for(;;);/* error handling */
+	  }
+	  // ========== [ error check ] ==========
+	  if(sem == NULL){
+		  for(;;);/* error handling */
+	  }
+	  // ========== [ loop ] ==========
+	  for(;;){
+		  xSemaphoreGive(sem);
+		  vTaskDelay(500/portTICK_RATE_MS);
+	  }
 }
 
 void SEM_Deinit(void) {
 }
 
 /*! \brief Initializes module */
-
 void SEM_Init(void) {
-	  // ========== [ task ] ==========
-	 xTaskHandle taskHndlSem;
-
-	  // ----- | slave | -----
+	 xTaskHandle taskHndlSem1;
+	 // ========== [ task - master ] ==========
 	  if(xTaskCreate(
-		  vSlaveTask,
-		  "vSlaveTask",
-		  3000/sizeof(StackType_t),
-		  (void*) NULL,
-		  tskIDLE_PRIORITY+2,
-		  &taskHndlSem
+		  vMasterTask,						/* function */
+		  "vMasterTask",					/* kernel awareness name */
+		  configMINIMAL_STACK_SIZE+100,		/* stack */
+		  (void*) NULL,						/* task parameter */
+		  tskIDLE_PRIORITY+1,				/* priority */
+		  &taskHndlSem1						/* handle */
 	  )!=pdPASS){
-		  /* error handling */
-	  }
-//	  // ----- | master| -----
-	  if(xTaskCreate(
-		  vMasterTask,
-		  "vMasterTask",
-		  500/sizeof(StackType_t),
-		  (void*) NULL,
-		  tskIDLE_PRIORITY+1,
-		  &taskHndlSem
-	  )!=pdPASS){
-		  /* error handling */
+		  for(;;);/* error handling */
 	  }
 }
 #endif /* PL_CONFIG_HAS_SEMAPHORE */
