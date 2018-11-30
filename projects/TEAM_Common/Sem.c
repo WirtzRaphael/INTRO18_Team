@@ -43,7 +43,7 @@ static void vMasterTask(void *pvParameters) {
 		  vSlaveTask,						/* function */
 		  "vSlaveTask",						/* kernel awareness name */
 		  configMINIMAL_STACK_SIZE+50,		/* stack */
-		  sem,								/* task parameter */
+		  sem,								/* task parameter - sem as parameter */
 		  tskIDLE_PRIORITY+2,				/* priority */
 		  &taskHndlSem2						/* handle */
 	  )!=pdPASS){
@@ -56,7 +56,8 @@ static void vMasterTask(void *pvParameters) {
 	  // ========== [ loop ] ==========
 	  for(;;){
 		  xSemaphoreGive(sem);
-		  vTaskDelay(500/portTICK_RATE_MS);
+		  // pdMS_TO_TICKS: Converts a time in milliseconds to a time in ticks
+		  vTaskDelay(pdMS_TO_TICKS(500)/portTICK_RATE_MS);
 	  }
 }
 
