@@ -319,6 +319,7 @@ static void taskZork(void *pvParameters){
 void APP_Start(void) {
   PL_Init();
   //RTOS_init(); // in PL_Init already
+  //SEM_Init();
 
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
@@ -356,17 +357,7 @@ void APP_Start(void) {
 //  }
 
   // ----- | task Zork| -----
-  if(xTaskCreate(
-	  taskZork,
-	  "taskZork",
-	  18000/sizeof(StackType_t),
-	  (void*) NULL,
-	  tskIDLE_PRIORITY+1,
-	  &taskHndl
-  )!=pdPASS){
-	  /* error handling */
-  }
-
+  zorkTask(taskHndl);
   //---
 
 
@@ -383,6 +374,30 @@ void APP_Start(void) {
 
 
   }
+}
+
+/* --------------------------------------------------
+ * ZORK
+ * platform: 	Robo V1
+   ------------------------------------------------- */
+void zorkTask(xTaskHandle taskHndl){
+	 if(xTaskCreate(
+		  taskZork,
+		  "taskZork",
+		  8000/sizeof(StackType_t),
+		  (void*) NULL,
+		  tskIDLE_PRIORITY+1,
+		  &taskHndl
+	  )!=pdPASS){
+		 /*  error handling */
+	  }
+}
+// --------------------------------------------------
+// #23 DEBOUNCE
+// platform: 	Robo V1
+// -------------------------------------------------
+void assignment23Queues(void){
+	/* solution in file shell.c */
 }
 
 /* --------------------------------------------------
@@ -439,16 +454,6 @@ void assignment19frtos_task(void){
 
 	  }
 }
-
-// --------------------------------------------------
-// #18 DEBOUNCE
-// platform: 	Robo V1
-// -------------------------------------------------
-void assignment23Queues(void){
-
-
-}
-
 
 // --------------------------------------------------
 // #18 DEBOUNCE
