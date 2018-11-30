@@ -6,7 +6,7 @@
 % ------------------------------------------------------------
 %	PACKAGES AND THEMES
 % ------------------------------------------------------------
-\documentclass{beamer}
+\documentclass[usenames, dvipsnames]{beamer}
 
 \mode<presentation> {
 
@@ -17,7 +17,7 @@
 %\usetheme{default}
 %\usetheme{AnnArbor}
 %\usetheme{Antibes}
-%\usetheme{Bergen}
+%\usetheme[usenames, dvipsnames]{Bergen}
 %\usetheme{Berkeley}
 %\usetheme{Berlin}
 %\usetheme{Boadilla}
@@ -34,7 +34,7 @@
 \usetheme{Madrid}
 %\usetheme{Malmoe}
 %\usetheme{Marburg}
-%\usetheme{Montpellier}
+%%\usetheme{Montpellier}
 %\usetheme{PaloAlto}
 %\usetheme{Pittsburgh}
 %\usetheme{Rochester}
@@ -47,7 +47,7 @@
 % changes the colors of your current slide theme.
 
 %\usecolortheme{albatross}
-%\usecolortheme{beaver}
+\usecolortheme{beaver}
 %\usecolortheme{beetle}
 %\usecolortheme{crane}
 %\usecolortheme{dolphin}
@@ -66,6 +66,10 @@
 
 %\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
+
+\useinnertheme{circles}
+%\definecolor{userdefCol}{rgb}{0, 0, 0} % UBC Blue (primary)
+\usecolortheme[named=black]{structure}
 
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
@@ -90,13 +94,6 @@
 	HSLU Hochschule Luzern
 }
 
-%\author{author}
-%institute[] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
-% {
-% HSLU - Hochschule Luzern Technik \& Architektur \\ % Your institution for the title page
-% \medskip
-% \textit{} % Your email address
-% }
 \date{\today} % Date, can be changed to a custom date
 
 \begin{document}
