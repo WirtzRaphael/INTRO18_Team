@@ -148,16 +148,18 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
   for(i=0;i<REF_NOF_SENSORS;i++) {
     SensorFctArray[i].SetOutput(); /* turn I/O line as output */
     SensorFctArray[i].SetVal(); /* put high */
-    raw[i] = MAX_SENSOR_VALUE;
+    raw[i] = MAX_SENSOR_VALUE; /* default value */
   }
   WAIT1_Waitus(50); /* give at least 10 us to charge the capacitor */
   for(i=0;i<REF_NOF_SENSORS;i++) {
     SensorFctArray[i].SetInput(); /* turn I/O line as input */
   }
   (void)RefCnt_ResetCounter(timerHandle); /* reset timer counter */
+  //--- do loop
   do {
     timerVal = RefCnt_GetCounterValue(timerHandle);
     cnt = 0;
+    //--- for loop
     for(i=0;i<REF_NOF_SENSORS;i++) {
       if (raw[i]==MAX_SENSOR_VALUE) { /* not measured yet? */
         if (SensorFctArray[i].GetVal()==0) {
@@ -167,7 +169,9 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
         cnt++;
       }
     }
+    //--- end loop
   } while(cnt!=REF_NOF_SENSORS);
+  //--- end loop
   taskEXIT_CRITICAL();
   LED_IR_Off(); /* IR LED's off */
 }
