@@ -34,6 +34,7 @@
 #define REF_SENSOR1_IS_LEFT   1 /* sensor number one is on the left side */
 #define REF_MIN_NOISE_VAL     0x40   /* values below this are not added to the weighted sum */
 #define REF_USE_WHITE_LINE    0  /* if set to 1, then the robot is using a white (on black) line, otherwise a black (on white) line */
+#define REF_TIMEOUT (0.01 * RefCnt_CNT_INP_FREQ_U_0 )	/* auf 2ms moeglich (messen? wie Limit bestimmen?), ticks = time * ticks/s, use RefCnt counter register*/
 
 #define REF_START_STOP_CALIB      1 /* start/stop calibration commands */
 #if REF_START_STOP_CALIB
@@ -162,7 +163,8 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
     //--- for loop
     for(i=0;i<REF_NOF_SENSORS;i++) {
       if (raw[i]==MAX_SENSOR_VALUE) { /* not measured yet? */
-        if (SensorFctArray[i].GetVal()==0) {
+        if (SensorFctArray[i].GetVal()==0
+        	|| timerVal > REF_TIMEOUT) {		// timeout
           raw[i] = (uint16_t)timerVal;
         }
       } else { /* have value */
