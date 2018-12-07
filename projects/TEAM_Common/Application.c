@@ -324,6 +324,7 @@ void APP_Start(void) {
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
 
+  // ========== [ event ] ==========
   EVNT_SetEvent(EVNT_STARTUP);
 
   // ========== [ task ] ==========
