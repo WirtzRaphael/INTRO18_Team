@@ -340,7 +340,7 @@ void APP_Start(void) {
 	//configMINIMAL_STACK_SIZE+120,	/* stack */
 	500/sizeof(StackType_t),
 	(void*) NULL, 					/* task parameter */
-	tskIDLE_PRIORITY, 				/* priority */
+	tskIDLE_PRIORITY + 2, 				/* priority */
 	&taskHndl 						/* handle */
   );//>> create task
   if (res!=pdPASS){ /* error handling */ }
