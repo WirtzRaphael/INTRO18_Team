@@ -381,12 +381,13 @@ static uint8_t ParsePidParameter(PID_Config *config, const unsigned char *cmd, b
   return res;
 }
 
+#if PL_CONFIG_HAS_CONFIG_NVM
 static uint8_t PID_LoadSettingsFromFlash(void) {
   PIDConfig_t *ptr;
 
   ptr = (PIDConfig_t*)NVMC_GetPIDData();
   if (ptr==NULL) {
-    return ERR_FAILED;
+	return ERR_FAILED;
   }
   config = *ptr; /* copy data from FLASH to RAM */
   return ERR_OK;
@@ -395,6 +396,7 @@ static uint8_t PID_LoadSettingsFromFlash(void) {
 static uint8_t PID_StoreSettingsToFlash(void) {
   return NVMC_SavePIDData(&config, sizeof(config));
 }
+#endif
 
 uint8_t PID_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_StdIOType *io) {
   uint8_t res = ERR_OK;
