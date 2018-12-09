@@ -32,6 +32,7 @@ void TMR_OnInterrupt(void) {
 	  cntr = 0; // reset
   }
   TRG_AddTick();
+  //TACHO_Sample();
 }
 
 void TMR_Init(void) {

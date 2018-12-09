@@ -93,7 +93,7 @@ void QuadInt_OnInterrupt(void)
 void TI1_OnInterrupt(void)
 {
   /* Write your code here ... */
-	TMR_OnInterrupt();
+	//TMR_OnInterrupt();
 }
 
 /*
