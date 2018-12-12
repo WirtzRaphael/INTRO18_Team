@@ -462,8 +462,8 @@ void PID_Init(void) {
   config.speedLeftConfig.pFactor100 = 1200;
   config.speedLeftConfig.iFactor100 = 60;
   config.speedLeftConfig.dFactor100 = 5;
-  config.speedLeftConfig.iAntiWindup = 0;
-  config.speedLeftConfig.maxSpeedPercent = 95;
+  config.speedLeftConfig.iAntiWindup = 50000;
+  config.speedLeftConfig.maxSpeedPercent = 0;
   config.speedLeftConfig.lastError = 0;
   config.speedLeftConfig.integral = 0;
 
