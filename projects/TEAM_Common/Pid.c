@@ -198,6 +198,7 @@ void PID_Line(uint16_t currLine, uint16_t setLine) {
 }
 
 void PID_Speed(int32_t currSpeed, int32_t setSpeed, bool isLeft) {
+	//setSpeed = setSpeed*1.6;	/* Vorfilter */
   if (isLeft) {
     PID_SpeedCfg(currSpeed, setSpeed, isLeft, &config.speedLeftConfig);
   } else {
@@ -458,11 +459,11 @@ void PID_Deinit(void) {
 
 void PID_Init(void) {
   /*! \todo determine your PID values */
-  config.speedLeftConfig.pFactor100 = 0;
-  config.speedLeftConfig.iFactor100 = 0;
-  config.speedLeftConfig.dFactor100 = 0;
+  config.speedLeftConfig.pFactor100 = 1200;
+  config.speedLeftConfig.iFactor100 = 60;
+  config.speedLeftConfig.dFactor100 = 5;
   config.speedLeftConfig.iAntiWindup = 0;
-  config.speedLeftConfig.maxSpeedPercent = 0;
+  config.speedLeftConfig.maxSpeedPercent = 95;
   config.speedLeftConfig.lastError = 0;
   config.speedLeftConfig.integral = 0;
 
