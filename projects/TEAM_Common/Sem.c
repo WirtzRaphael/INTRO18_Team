@@ -42,7 +42,7 @@ static void vMasterTask(void *pvParameters) {
 	  if(xTaskCreate(
 		  vSlaveTask,						/* function */
 		  "vSlaveTask",						/* kernel awareness name */
-		  configMINIMAL_STACK_SIZE+50,		/* stack */
+		  configMINIMAL_STACK_SIZE+100,		/* stack */
 		  sem,								/* task parameter - sem as parameter */
 		  tskIDLE_PRIORITY+2,				/* priority */
 		  &taskHndlSem2						/* handle */
@@ -68,15 +68,15 @@ void SEM_Deinit(void) {
 void SEM_Init(void) {
 	 xTaskHandle taskHndlSem1;
 	 // ========== [ task - master ] ==========
-	  if(xTaskCreate(
-		  vMasterTask,						/* function */
-		  "vMasterTask",					/* kernel awareness name */
-		  configMINIMAL_STACK_SIZE+100,		/* stack */
-		  (void*) NULL,						/* task parameter */
-		  tskIDLE_PRIORITY+1,				/* priority */
-		  &taskHndlSem1						/* handle */
-	  )!=pdPASS){
-		  for(;;);/* error handling */
-	  }
+//	  if(xTaskCreate(
+//		  vMasterTask,						/* function */
+//		  "vMasterTask",					/* kernel awareness name */
+//		  configMINIMAL_STACK_SIZE+100,		/* stack */
+//		  (void*) NULL,						/* task parameter */
+//		  tskIDLE_PRIORITY+1,				/* priority */
+//		  &taskHndlSem1						/* handle */
+//	  )!=pdPASS){
+//		  for(;;);/* error handling */
+//	  }
 }
 #endif /* PL_CONFIG_HAS_SEMAPHORE */
