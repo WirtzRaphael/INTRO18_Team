@@ -28,7 +28,7 @@
   #include "Drive.h"
 #endif
 
-#if 1 /*! \todo */
+#if PL_CONFIG_HAS_RADIO /*! \todo done*/
 #include "RNet_App.h"
 #endif
 
@@ -118,7 +118,7 @@ static void StateMachine(void) {
       break;
 
     case STATE_STOP:
-#if 1
+#if PL_CONFIG_HAS_RADIO
       RNETA_SendSignal('C'); /*! \todo */
 #endif
       SHELL_SendString("Stopped!\r\n");
@@ -139,7 +139,7 @@ static void LineTask (void *pvParameters) {
   for(;;) {
     (void)xTaskNotifyWait(0UL, LF_START_FOLLOWING|LF_STOP_FOLLOWING, &notifcationValue, 0); /* check flags */
     if (notifcationValue&LF_START_FOLLOWING) {
-#if 1
+#if PL_CONFIG_HAS_RADIO
       RNETA_SendSignal('B'); /*! \todo */
 #endif
       DRV_SetMode(DRV_MODE_NONE); /* disable any drive mode */
