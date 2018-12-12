@@ -14,6 +14,9 @@
 #include "Trigger.h"
 #include "Event.h"
 //#include "FRTOS1.h"
+#if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS
+	#include "SYS1.h"
+#endif
 
 /*!
  * \brief Returns the state of the keys. This directly reflects the value of the port
@@ -122,82 +125,122 @@ static void KEYDBNC_OnDebounceEvent(DBNC_EventKinds event, DBNC_KeySet keys) {
     case DBNC_EVENT_LONG_PRESSED:
 #if PL_CONFIG_NOF_KEYS >= 1
       if (keys&(1<<0)) {
-        EVNT_SetEvent(EVNT_SW1_LPRESSED);
+        EVNT_SetEvent(EVNT_SW1_LONG_PRESSED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 2
       if (keys&(1<<1)) {
-        EVNT_SetEvent(EVNT_SW2_LPRESSED);
+        EVNT_SetEvent(EVNT_SW2_LONG_PRESSED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 3
      if (keys&(1<<2)) {
-        EVNT_SetEvent(EVNT_SW3_LPRESSED);
+        EVNT_SetEvent(EVNT_SW3_LONG_PRESSED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 4
      if (keys&(1<<3)) {
-        EVNT_SetEvent(EVNT_SW4_LPRESSED);
+        EVNT_SetEvent(EVNT_SW4_LONG_PRESSED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 5
      if (keys&(1<<4)) {
-        EVNT_SetEvent(EVNT_SW5_LPRESSED);
+        EVNT_SetEvent(EVNT_SW5_LONG_PRESSED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 6
      if (keys&(1<<5)) {
-        EVNT_SetEvent(EVNT_SW6_LPRESSED);
+        EVNT_SetEvent(EVNT_SW6_LONG_PRESSED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 7
      if (keys&(1<<6)) {
-        EVNT_SetEvent(EVNT_SW7_LPRESSED);
+        EVNT_SetEvent(EVNT_SW7_LONG_PRESSED);
       }
 #endif
      break;
 
-     /* released */
-    case DBNC_EVENT_RELEASED:
+     /* long released */
+    case DBNC_EVENT_LONG_RELEASED:
 #if PL_CONFIG_NOF_KEYS >= 1
       if (keys&(1<<0)) {
-        EVNT_SetEvent(EVNT_SW1_RELEASED);
+        EVNT_SetEvent(EVNT_SW1_LONG_RELEASED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 2
       if (keys&(1<<1)) {
-        EVNT_SetEvent(EVNT_SW2_RELEASED);
+        EVNT_SetEvent(EVNT_SW2_LONG_RELEASED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 3
       if (keys&(1<<2)) {
-        EVNT_SetEvent(EVNT_SW3_RELEASED);
+        EVNT_SetEvent(EVNT_SW3_LONG_RELEASED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 4
       if (keys&(1<<3)) {
-        EVNT_SetEvent(EVNT_SW4_RELEASED);
+        EVNT_SetEvent(EVNT_SW4_LONG_RELEASED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 5
       if (keys&(1<<4)) {
-        EVNT_SetEvent(EVNT_SW5_RELEASED);
+        EVNT_SetEvent(EVNT_SW5_LONG_RELEASED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 6
       if (keys&(1<<5)) {
-        EVNT_SetEvent(EVNT_SW6_RELEASED);
+        EVNT_SetEvent(EVNT_SW6_LONG_RELEASED);
       }
 #endif
 #if PL_CONFIG_NOF_KEYS >= 7
       if (keys&(1<<6)) {
-        EVNT_SetEvent(EVNT_SW7_RELEASED);
+        EVNT_SetEvent(EVNT_SW7_LONG_RELEASED);
       }
 #endif
       break;
+
+      /* released */
+     case DBNC_EVENT_RELEASED:
+ #if PL_CONFIG_NOF_KEYS >= 1
+       if (keys&(1<<0)) {
+         EVNT_SetEvent(EVNT_SW1_RELEASED);
+       }
+ #endif
+ #if PL_CONFIG_NOF_KEYS >= 2
+       if (keys&(1<<1)) {
+         EVNT_SetEvent(EVNT_SW2_RELEASED);
+       }
+ #endif
+ #if PL_CONFIG_NOF_KEYS >= 3
+       if (keys&(1<<2)) {
+         EVNT_SetEvent(EVNT_SW3_RELEASED);
+       }
+ #endif
+ #if PL_CONFIG_NOF_KEYS >= 4
+       if (keys&(1<<3)) {
+         EVNT_SetEvent(EVNT_SW4_RELEASED);
+       }
+ #endif
+ #if PL_CONFIG_NOF_KEYS >= 5
+       if (keys&(1<<4)) {
+         EVNT_SetEvent(EVNT_SW5_RELEASED);
+       }
+ #endif
+ #if PL_CONFIG_NOF_KEYS >= 6
+       if (keys&(1<<5)) {
+         EVNT_SetEvent(EVNT_SW6_RELEASED);
+       }
+ #endif
+ #if PL_CONFIG_NOF_KEYS >= 7
+       if (keys&(1<<6)) {
+         EVNT_SetEvent(EVNT_SW7_RELEASED);
+       }
+ #endif
+       break;
+
+      /* event end */
     case DBNC_EVENT_END:
       /*! \todo Check what you have to do at the end of the debouncing. Check if you have to re-enable interrupts! */
-    	/* already implemented */
     #if PL_CONFIG_HAS_KBI
       KEY_EnableInterrupts();
     #endif
@@ -215,7 +258,12 @@ static DBNC_FSMData KEYDBNC_FSMdata = {
   /* data: */
   DBNC_KEY_IDLE, /* initial state machine state, here the state is stored */
   0, /* key scan value */
-  0, /* long key count */
+  //0, /* long key count */
+#if DBNC_CONFIG_MULTIPLE_LONG_KEYS
+  {0}, /* long key count(s) */
+#else
+  0, /* long key count(s) */
+#endif
   TRG_KEYPRESS, /* trigger to be used */
   (50/TRG_TICKS_MS), /* debounceTicks */
   (500/TRG_TICKS_MS), /* longKeyTicks for x ms */
@@ -226,13 +274,16 @@ void KEYDBNC_Process(void) {
    * But be careful: only if we are not debouncing, and if we have a key press if we are polling.
    * And you will need to disable the keyboard interrupts too!
    */
-	if (KEYDBNC_FSMdata.state==DBNC_KEY_IDLE  && KEYDBNC_GetKeys() != 0) {
-		DBNC_Process(&KEYDBNC_FSMdata);	/* start FSM */
-		//KEY_DisableInterrupts();		/* disbable interrrupts for all keys */
-	}
+	/*! \todo Only debounce if you are not debouncing already */
 
-	//KEY_EnableInterrupts();
-  /*! \todo Only debounce if you are not debouncing already */
+	  if (KEYDBNC_FSMdata.state==DBNC_KEY_IDLE && KEYDBNC_GetKeys()!=0) { /* a key is pressed and we are not debouncing */
+	  #if PL_CONFIG_HAS_KBI
+		KEY_DisableInterrupts(); /* disable interrupts for all keys */
+	  #endif
+		DBNC_Process(&KEYDBNC_FSMdata); /* starts the state machine */
+	  }
+	//KEY_EnableInterrupts();	// bei DBNC_EVENT_END
+
  }
 
 void KEYDBNC_Init(void) {
