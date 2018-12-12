@@ -333,17 +333,17 @@ void APP_Start(void) {
 
   // ----- | task 1| -----
   //<< create task
-  BaseType_t res;
-  res = xTaskCreate(
-	taskOne,						/* function */
-	"taskOne",						/* kernel awareness name */
-	//configMINIMAL_STACK_SIZE+120,	/* stack */
-	500/sizeof(StackType_t),
-	(void*) NULL, 					/* task parameter */
-	tskIDLE_PRIORITY + 2, 				/* priority */
-	&taskHndl 						/* handle */
-  );//>> create task
-  if (res!=pdPASS){ /* error handling */ }
+//  BaseType_t res;
+//  res = xTaskCreate(
+//	taskOne,						/* function */
+//	"taskOne",						/* kernel awareness name */
+//	//configMINIMAL_STACK_SIZE+120,	/* stack */
+//	500/sizeof(StackType_t),
+//	(void*) NULL, 					/* task parameter */
+//	tskIDLE_PRIORITY + 2, 				/* priority */
+//	&taskHndl 						/* handle */
+//  );//>> create task
+//  if (res!=pdPASS){ /* error handling */ }
 
 //  // ----- | task 2| -----
 //  if(xTaskCreate(
@@ -426,17 +426,17 @@ void assignment19frtos_task(void){
 	  xTaskHandle taskHndl;
 
 	  //<< create task
-	  BaseType_t res;
-	  res = xTaskCreate(
-		taskOne,			/* function */
-		"taskOne",		/* kernel awareness name */
-		//configMINIMAL_STACK_SIZE+120,	/* stack */
-		500/sizeof(StackType_t),
-		(void*) NULL, 		/* task parameter */
-		tskIDLE_PRIORITY, 	/* priority */
-		&taskHndl 			/* handle */
-	  );//>> create task
-	  if (res!=pdPASS){ /* error handling */ }
+//	  BaseType_t res;
+//	  res = xTaskCreate(
+//		taskOne,			/* function */
+//		"taskOne",		/* kernel awareness name */
+//		//configMINIMAL_STACK_SIZE+120,	/* stack */
+//		500/sizeof(StackType_t),
+//		(void*) NULL, 		/* task parameter */
+//		tskIDLE_PRIORITY, 	/* priority */
+//		&taskHndl 			/* handle */
+//	  );//>> create task
+//	  if (res!=pdPASS){ /* error handling */ }
 
 	// === [ task short version ] ===
 	//  if (xTaskCreate(firstTask, "FirstTask", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, NULL) != pdPASS) {

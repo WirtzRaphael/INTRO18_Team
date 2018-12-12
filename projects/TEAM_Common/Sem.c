@@ -66,7 +66,7 @@ void SEM_Deinit(void) {
 
 /*! \brief Initializes module */
 void SEM_Init(void) {
-	 xTaskHandle taskHndlSem1;
+	 //xTaskHandle taskHndlSem1;
 	 // ========== [ task - master ] ==========
 //	  if(xTaskCreate(
 //		  vMasterTask,						/* function */
