@@ -101,9 +101,19 @@ void APP_EventHandler(EVNT_Handle event) {
 
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:	//rw: depends on PL_LOCAL_CONFIG_NOF_KEYS, in KeyDebounce.c
-    BtnMsg(1, "pressed");
-    LF_StartStopFollowing();
+	  BtnMsg(1, "pressed");
+	  //LF_StopFollowing();
      break;
+  case EVNT_SW1_RELEASED:
+	  BtnMsg(1,"released");
+	  break;
+  case EVNT_SW1_LONG_PRESSED:
+	  BtnMsg(1,"long pressed");
+	  break;
+  case EVNT_SW1_LONG_RELEASED:
+	  BtnMsg(1,"long released");
+	  //LF_StartStopFollowing();
+	  break;
 #endif /* PL_CONFIG_NOF_KEYS */
     default:
       break;
@@ -228,7 +238,8 @@ void KEY_scan(void){
  * unblock.
  -------------------------------------------------- */
 static void appTask(void *pvParameters){
-	(void)pvParameters;	//cast, necessary?
+	//(void)pvParameters;	//cast, necessary?
+	TickType_t last = xTaskGetTickCount();
 
 	// ========== [ start sequency ] ==========
 	//BUZ_Beep(300,1000);
@@ -236,8 +247,11 @@ static void appTask(void *pvParameters){
 
 	// ========== [ loop ] ==========
 	for(;;){
-		vTaskDelay(500/portTICK_RATE_MS);
+		KEYDBNC_Process();
+		//KEY_scan();
 		EVNT_HandleEvent(APP_EventHandler, TRUE);
+		//vTaskDelay(500/portTICK_RATE_MS);
+		vTaskDelayUntil(&last, pdMS_TO_TICKS(100));
 	}
 }
 
@@ -340,7 +354,7 @@ void APP_Start(void) {
 	appTask,						/* function */
 	"appTask",						/* kernel awareness name */
 	//configMINIMAL_STACK_SIZE+120,	/* stack */
-	500/sizeof(StackType_t),
+	6000/sizeof(StackType_t),
 	(void*) NULL, 					/* task parameter */
 	tskIDLE_PRIORITY + 2, 				/* priority */
 	&taskHndl 						/* handle */
@@ -428,17 +442,17 @@ void assignment19frtos_task(void){
 	  xTaskHandle taskHndl;
 
 	  //<< create task
-//	  BaseType_t res;
-//	  res = xTaskCreate(
-//		appTask,			/* function */
-//		"appTask",		/* kernel awareness name */
-//		//configMINIMAL_STACK_SIZE+120,	/* stack */
-//		500/sizeof(StackType_t),
-//		(void*) NULL, 		/* task parameter */
-//		tskIDLE_PRIORITY, 	/* priority */
-//		&taskHndl 			/* handle */
-//	  );//>> create task
-//	  if (res!=pdPASS){ /* error handling */ }
+	  BaseType_t res;
+	  res = xTaskCreate(
+		appTask,			/* function */
+		"appTask",		/* kernel awareness name */
+		//configMINIMAL_STACK_SIZE+120,	/* stack */
+		500/sizeof(StackType_t),
+		(void*) NULL, 		/* task parameter */
+		tskIDLE_PRIORITY, 	/* priority */
+		&taskHndl 			/* handle */
+	  );//>> create task
+	  if (res!=pdPASS){ /* error handling */ }
 
 	// === [ task short version ] ===
 	//  if (xTaskCreate(firstTask, "FirstTask", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, NULL) != pdPASS) {
