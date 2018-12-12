@@ -100,8 +100,9 @@ void APP_EventHandler(EVNT_Handle event) {
     break;
 
 #if PL_CONFIG_NOF_KEYS>=1
-  case EVNT_SW1_PRESSED:	//rw: depends on PL_LOCAL_CONFIG_NOF_KEYS
+  case EVNT_SW1_PRESSED:	//rw: depends on PL_LOCAL_CONFIG_NOF_KEYS, in KeyDebounce.c
     BtnMsg(1, "pressed");
+    LF_StartStopFollowing();
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
     default:
@@ -226,7 +227,7 @@ void KEY_scan(void){
  * is called, vTaskDelayUntil () specifies the absolute (exact) time at which it wishes to
  * unblock.
  -------------------------------------------------- */
-static void taskOne(void *pvParameters){
+static void appTask(void *pvParameters){
 	(void)pvParameters;	//cast, necessary?
 
 	// ========== [ start sequency ] ==========
@@ -240,7 +241,7 @@ static void taskOne(void *pvParameters){
 	}
 }
 
-static void taskTwo(void *pvParameters){
+static void taskOne(void *pvParameters){
 	BUZ_Beep(300,1000);
 	for(;;){
 		vTaskDelay(500/portTICK_RATE_MS);
@@ -327,28 +328,29 @@ void APP_Start(void) {
   // ========== [ event ] ==========
   EVNT_SetEvent(EVNT_STARTUP);
 
+  EVNT_HandleEvent(APP_EventHandler, TRUE);
   // ========== [ task ] ==========
   // ApplicationMallocFailedHook => increase heap size
   xTaskHandle taskHndl;
 
-  // ----- | task 1| -----
+  // ----- | appTask | -----
   //<< create task
-//  BaseType_t res;
-//  res = xTaskCreate(
-//	taskOne,						/* function */
-//	"taskOne",						/* kernel awareness name */
-//	//configMINIMAL_STACK_SIZE+120,	/* stack */
-//	500/sizeof(StackType_t),
-//	(void*) NULL, 					/* task parameter */
-//	tskIDLE_PRIORITY + 2, 				/* priority */
-//	&taskHndl 						/* handle */
-//  );//>> create task
-//  if (res!=pdPASS){ /* error handling */ }
+  BaseType_t res;
+  res = xTaskCreate(
+	appTask,						/* function */
+	"appTask",						/* kernel awareness name */
+	//configMINIMAL_STACK_SIZE+120,	/* stack */
+	500/sizeof(StackType_t),
+	(void*) NULL, 					/* task parameter */
+	tskIDLE_PRIORITY + 2, 				/* priority */
+	&taskHndl 						/* handle */
+  );//>> create task
+  if (res!=pdPASS){ /* error handling */ }
 
 //  // ----- | task 2| -----
 //  if(xTaskCreate(
-//	  taskTwo,
-//	  "taskTwo",
+//	  taskOne,
+//	  "taskOne",
 //	  500/sizeof(StackType_t),
 //	  (void*) NULL,
 //	  tskIDLE_PRIORITY+2,
@@ -367,7 +369,7 @@ void APP_Start(void) {
 
   // ==========  [ loop ] ==========
   for(;;){
-	  EVNT_HandleEvent(APP_EventHandler, TRUE);
+	  //EVNT_HandleEvent(APP_EventHandler, TRUE);
 	  //vTaskSuspendAll();		/* suspend all tasks */
 	  //xTaskResumeAll();		/* resume all tasks */
   }
@@ -428,8 +430,8 @@ void assignment19frtos_task(void){
 	  //<< create task
 //	  BaseType_t res;
 //	  res = xTaskCreate(
-//		taskOne,			/* function */
-//		"taskOne",		/* kernel awareness name */
+//		appTask,			/* function */
+//		"appTask",		/* kernel awareness name */
 //		//configMINIMAL_STACK_SIZE+120,	/* stack */
 //		500/sizeof(StackType_t),
 //		(void*) NULL, 		/* task parameter */
