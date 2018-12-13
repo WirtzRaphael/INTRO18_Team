@@ -186,6 +186,60 @@ void FRTOS1_vApplicationMallocFailedHook(void)
   for(;;) {}
 }
 
+/*
+** ===================================================================
+**     Event       :  RF1_OnActivate (module Events)
+**
+**     Component   :  RF1 [nRF24L01]
+**     Description :
+**         Event called before accessing the bus.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void RF1_OnActivate(void)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  RF1_OnDeactivate (module Events)
+**
+**     Component   :  RF1 [nRF24L01]
+**     Description :
+**         Event called before releasing the bus.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void RF1_OnDeactivate(void)
+{
+  /* Write your code here ... */
+}
+
+#if RF1_CONFIG_INITIALIZE_DURING_STARTUP
+  RF1_Init(); /* ### nRF24L01 "RF1" init code ... */
+#endif
+/*
+** ===================================================================
+**     Event       :  RNET1_OnRadioEvent (module Events)
+**
+**     Component   :  RNET1 [RNet]
+**     Description :
+**         Event created for various radio states, like timeout, ack
+**         received, data sent, ...
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         event           - 
+**     Returns     : Nothing
+** ===================================================================
+*/
+void RNET1_OnRadioEvent(RNET1_RadioEvent event)
+{
+  /* Write your code here ... */
+}
+
 /* END Events */
 
 #ifdef __cplusplus
