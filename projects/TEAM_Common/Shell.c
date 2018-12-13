@@ -361,10 +361,14 @@ void SHELL_ParseCmd(uint8_t *cmd) {
 
 #if PL_CONFIG_HAS_RTOS
 static void ShellTask(void *pvParameters) {
+	(void)pvParameters; /* not used */
   int i;
   /*! \todo Extend as needed */
+  unsigned char p[30];
+  unsigned char* msg;
+  //size_t p[30];				/* string size */
+  //uint8_t* msg; 			/* message */
 
-  (void)pvParameters; /* not used */
   /* initialize buffers */
   for(i=0;i<sizeof(ios)/sizeof(ios[0]);i++) {
     ios[i].buf[0] = '\0';
@@ -381,16 +385,19 @@ static void ShellTask(void *pvParameters) {
 #endif
 #if PL_CONFIG_HAS_SHELL_QUEUE && PL_CONFIG_SQUEUE_SINGLE_CHAR
     {
-        /*! \todo Handle shell queue */
-    	unsigned char ch;
-    	while((ch=SQUEUE_ReceiveChar()) && ch!='\0'){
-    		ios[0].stdio->stdOut(ch);
-    	}
+    	/*! \todo - nothing_todo Handle shell queue */
+    	i = 0;
+    	do{
+			p[i] = SQUEUE_ReceiveChar();
+			i++;
+    	}while(p[i-1]!='\0');
+    	CLS1_SendStr(p, CLS1_GetStdio()->stdOut);
     }
 #elif PL_CONFIG_HAS_SHELL_QUEUE /* !PL_CONFIG_SQUEUE_SINGLE_CHAR */
     {
-    	/*! \todo Handle shell queue */
-    	const unsigned char *msg;
+    	/*! \todo - done Handle shell queue */
+    	unsigned char p[30];
+    	unsigned char* msg;
 
     	msg=SQUEUE_ReceiveMessage();
     	if(msg != NULL){
