@@ -295,7 +295,7 @@ void KEY_scan(void){
 	if(KEY1_Get()){
 		EVNT_SetEvent(EVNT_SW1_PRESSED);
 		//BtnMsg(1, "pressed");
-	}/
+	}
 #if PL_CONFIG_BOARD_IS_REMOTE
 	if(KEY2_Get()){
 		EVNT_SetEvent(EVNT_SW2_PRESSED);
