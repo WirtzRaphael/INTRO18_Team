@@ -291,6 +291,10 @@ static void blinkLED(void *p){
  * attention: 	function KEY_Scan in Keys.c
  */
 void KEY_scan(void){
+#if PL_CONFIG_HAS_DEBOUNCE
+	/* Key FSM */
+	//KEYDBNC_Process();	// Key - FSM, replaces KEYx_Get()
+#else
 	/* Key polling */
 	if(KEY1_Get()){
 		EVNT_SetEvent(EVNT_SW1_PRESSED);
@@ -316,8 +320,8 @@ void KEY_scan(void){
 		EVNT_SetEvent(EVNT_SW7_PRESSED);
 	}
 #endif /* PL_CONFIG_BOARD_IS_REMOTE */
-	/* Key FSM */
-	//KEYDBNC_Process();	// Key - FSM, replaces KEYx_Get()
+#endif /* PL_CONFIG_HAS_DEBOUNCE */
+
 	EVNT_HandleEvent(APP_EventHandler, TRUE); // Event handling
 }
 
