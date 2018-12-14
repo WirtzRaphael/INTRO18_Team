@@ -15,8 +15,8 @@
 #define PL_LOCAL_CONFIG_BOARD_IS_REMOTE     (1) /* I'm the REMOTE board */
 
 /* platform hardware configuration */
-#define PL_LOCAL_CONFIG_NOF_LEDS            (0) /* number of LEDs, 0 to 3 */
-#define PL_LOCAL_CONFIG_NOF_KEYS            (0) /* number of keys, 0 to 7 */
+#define PL_LOCAL_CONFIG_NOF_LEDS            (1) /* number of LEDs, 0 to 3 */
+#define PL_LOCAL_CONFIG_NOF_KEYS            (7) /* number of keys, 0 to 7 */
 
 #if PL_LOCAL_CONFIG_NOF_KEYS>0
   #define PL_LOCAL_CONFIG_KEY_1_ISR         (0) /* if SW1 is using interrupts */
@@ -39,7 +39,7 @@
 //#define PL_LOCAL_CONFIG_HAS_RTOS_DISABLED                 /* disable RTOS usage */
 //#define PL_LOCAL_CONFIG_HAS_USB_CDC_DISABLED              /* disable USB CDC */
 //#define PL_LOCAL_CONFIG_HAS_SEGGER_RTT_DISABLED           /* disable Segger RTT */
-//#define PL_LOCAL_CONFIG_HAS_SHELL_QUEUE_DISABLED          /* disable shell queue */
+#define PL_LOCAL_CONFIG_HAS_SHELL_QUEUE_DISABLED          /* disable shell queue */
 #define PL_LOCAL_CONFIG_HAS_SQUEUE_SINGLE_CHAR_DISABLED   /* disable single character support in shell queue */
 #define PL_LOCAL_CONFIG_HAS_SEMAPHORE_DISABLED            /* disable semaphore test module */
 //#define PL_LOCAL_CONFIG_HAS_CONFIG_NVM_DISABLED           /* disable NVM storage */
