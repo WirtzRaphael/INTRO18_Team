@@ -15,7 +15,7 @@
 
 #if PL_CONFIG_BOARD_IS_FRDM
   /*!< NVRM_Config, start address of configuration data in flash */
-  /*! \todo add flash base address for NVMC */
+  /*! \todo done - checked in memory map - add flash base address for NVMC */
   #define NVMC_FLASH_START_ADDR    0x1FC00
 #elif PL_CONFIG_BOARD_IS_ROBO
   #define NVMC_FLASH_START_ADDR    0x10000000 /* DFLASH, NVRM_Config, start address of configuration data in flash */
