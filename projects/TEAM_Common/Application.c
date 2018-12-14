@@ -291,11 +291,34 @@ static void blinkLED(void *p){
  * attention: 	function KEY_Scan in Keys.c
  */
 void KEY_scan(void){
+	/* Key polling */
 	if(KEY1_Get()){
-		BtnMsg(1, "pressed");
-	}/* KEY1_Get */
+		EVNT_SetEvent(EVNT_SW1_PRESSED);
+		//BtnMsg(1, "pressed");
+	}/
+#if PL_CONFIG_BOARD_IS_REMOTE
+	if(KEY2_Get()){
+		EVNT_SetEvent(EVNT_SW2_PRESSED);
+	}
+	if(KEY3_Get()){
+		EVNT_SetEvent(EVNT_SW3_PRESSED);
+	}
+	if(KEY4_Get()){
+		EVNT_SetEvent(EVNT_SW4_PRESSED);
+	}
+	if(KEY5_Get()){
+		EVNT_SetEvent(EVNT_SW5_PRESSED);
+	}
+	if(KEY6_Get()){
+		EVNT_SetEvent(EVNT_SW6_PRESSED);
+	}
+	if(KEY7_Get()){
+		EVNT_SetEvent(EVNT_SW7_PRESSED);
+	}
+#endif /* PL_CONFIG_BOARD_IS_REMOTE */
+	/* Key FSM */
 	//KEYDBNC_Process();	// Key - FSM, replaces KEYx_Get()
-	//EVNT_HandleEvent(APP_EventHandler, TRUE); // Event
+	EVNT_HandleEvent(APP_EventHandler, TRUE); // Event handling
 }
 
 /* --------------------------------------------------
