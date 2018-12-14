@@ -74,8 +74,8 @@ static void BtnMsg(int btn, const char *msg) {
     CLS1_SendStr(": ", CLS1_GetStdio()->stdOut);
     CLS1_SendNum32s(btn, CLS1_GetStdio()->stdOut);
     CLS1_SendStr("\r\n", CLS1_GetStdio()->stdOut);
-  #endif
-#endif
+  #endif /* PL_CONFIG_HAS_SHELL_QUEUE */
+#endif /* PL_CONFIG_HAS_SHELL */
 }
 
 void APP_EventHandler(EVNT_Handle event) {
@@ -99,8 +99,8 @@ void APP_EventHandler(EVNT_Handle event) {
     LED2_Neg();
     break;
 
-#if PL_CONFIG_NOF_KEYS>=1
-  case EVNT_SW1_PRESSED:	//rw: depends on PL_LOCAL_CONFIG_NOF_KEYS, in KeyDebounce.c
+#if PL_CONFIG_NOF_KEYS>=1	//rw: depends on PL_LOCAL_CONFIG_NOF_KEYS, in KeyDebounce.c
+  case EVNT_SW1_PRESSED:
 	  BtnMsg(1, "pressed");
 	  //LF_StopFollowing();
      break;
@@ -114,6 +114,90 @@ void APP_EventHandler(EVNT_Handle event) {
 	  BtnMsg(1,"long released");
 	  //LF_StartStopFollowing();
 	  break;
+#endif /* PL_CONFIG_NOF_KEYS */
+#if PL_CONFIG_NOF_KEYS>=2
+  case EVNT_SW2_PRESSED:
+     BtnMsg(2, "pressed");
+     break;
+  case EVNT_SW2_RELEASED:
+     BtnMsg(2, "released");
+     break;
+  case EVNT_SW2_LONG_PRESSED:
+     BtnMsg(2, "long pressed");
+     break;
+  case EVNT_SW2_LONG_RELEASED:
+     BtnMsg(2, "long released");
+     break;
+#endif /* PL_CONFIG_NOF_KEYS */
+#if PL_CONFIG_NOF_KEYS>=3
+  case EVNT_SW3_PRESSED:
+     BtnMsg(3, "pressed");
+     break;
+  case EVNT_SW3_RELEASED:
+     BtnMsg(3, "released");
+     break;
+  case EVNT_SW3_LONG_PRESSED:
+     BtnMsg(3, "long pressed");
+     break;
+  case EVNT_SW3_LONG_RELEASED:
+     BtnMsg(3, "long released");
+     break;
+#endif /* PL_CONFIG_NOF_KEYS */
+#if PL_CONFIG_NOF_KEYS>=4
+  case EVNT_SW4_PRESSED:
+     BtnMsg(4, "pressed");
+     break;
+  case EVNT_SW4_RELEASED:
+     BtnMsg(4, "released");
+     break;
+  case EVNT_SW4_LONG_PRESSED:
+     BtnMsg(4, "long pressed");
+     break;
+  case EVNT_SW4_LONG_RELEASED:
+     BtnMsg(4, "long released");
+     break;
+#endif /* PL_CONFIG_NOF_KEYS */
+#if PL_CONFIG_NOF_KEYS>=5
+  case EVNT_SW5_PRESSED:
+     BtnMsg(5, "pressed");
+     break;
+  case EVNT_SW5_RELEASED:
+     BtnMsg(5, "released");
+     break;
+  case EVNT_SW5_LONG_PRESSED:
+     BtnMsg(5, "long pressed");
+     break;
+  case EVNT_SW5_LONG_RELEASED:
+     BtnMsg(5, "long released");
+     break;
+#endif /* PL_CONFIG_NOF_KEYS */
+#if PL_CONFIG_NOF_KEYS>=6
+  case EVNT_SW6_PRESSED:
+     BtnMsg(6, "pressed");
+     break;
+  case EVNT_SW6_RELEASED:
+     BtnMsg(6, "released");
+     break;
+  case EVNT_SW6_LONG_PRESSED:
+     BtnMsg(6, "long pressed");
+     break;
+  case EVNT_SW6_LONG_RELEASED:
+     BtnMsg(6, "long released");
+     break;
+#endif /* PL_CONFIG_NOF_KEYS */
+#if PL_CONFIG_NOF_KEYS>=7
+  case EVNT_SW7_PRESSED:
+     BtnMsg(7, "pressed");
+     break;
+  case EVNT_SW7_RELEASED:
+     BtnMsg(7, "released");
+     break;
+  case EVNT_SW7_LONG_PRESSED:
+     BtnMsg(7, "long pressed");
+     break;
+  case EVNT_SW7_LONG_RELEASED:
+     BtnMsg(7, "long released");
+     break;
 #endif /* PL_CONFIG_NOF_KEYS */
     default:
       break;
@@ -207,10 +291,11 @@ static void blinkLED(void *p){
  * attention: 	function KEY_Scan in Keys.c
  */
 void KEY_scan(void){
-	//if(KEY1_Get()){	% unnecessary
-	KEYDBNC_Process();	// Key - FSM
-	EVNT_HandleEvent(APP_EventHandler, TRUE); // Event
-	//}
+	if(KEY1_Get()){
+		BtnMsg(1, "pressed");
+	}/* KEY1_Get */
+	//KEYDBNC_Process();	// Key - FSM, replaces KEYx_Get()
+	//EVNT_HandleEvent(APP_EventHandler, TRUE); // Event
 }
 
 /* --------------------------------------------------
@@ -242,14 +327,16 @@ static void appTask(void *pvParameters){
 	TickType_t last = xTaskGetTickCount();
 
 	// ========== [ start sequency ] ==========
+#if PL_CONFIG_HAS_BUZZER
 	//BUZ_Beep(300,1000);
+#endif /* PL_CONFIG_HAS_BUZZER */
 	TRG_SetTrigger(TRG_BLINK,0,blinkLED, NULL);
 
 	// ========== [ loop ] ==========
 	for(;;){
-		KEYDBNC_Process();
+		KEY_scan();
 		//KEY_scan();
-		EVNT_HandleEvent(APP_EventHandler, TRUE);
+		//EVNT_HandleEvent(APP_EventHandler, TRUE);
 		//vTaskDelay(500/portTICK_RATE_MS);
 		vTaskDelayUntil(&last, pdMS_TO_TICKS(100));
 	}
@@ -354,7 +441,7 @@ void APP_Start(void) {
 	appTask,						/* function */
 	"appTask",						/* kernel awareness name */
 	//configMINIMAL_STACK_SIZE+120,	/* stack */
-	6000/sizeof(StackType_t),
+	500/sizeof(StackType_t),
 	(void*) NULL, 					/* task parameter */
 	tskIDLE_PRIORITY + 2, 				/* priority */
 	&taskHndl 						/* handle */
