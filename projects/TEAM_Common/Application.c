@@ -293,7 +293,7 @@ static void blinkLED(void *p){
 void KEY_scan(void){
 #if PL_CONFIG_HAS_DEBOUNCE
 	/* Key FSM */
-	//KEYDBNC_Process();	// Key - FSM, replaces KEYx_Get()
+	KEYDBNC_Process();	// Key - FSM, replaces KEYx_Get()
 #else
 	/* Key polling */
 	if(KEY1_Get()){

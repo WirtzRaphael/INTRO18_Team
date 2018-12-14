@@ -71,6 +71,7 @@ void Cpu_OnNMIINT(void)
 void TI1_OnInterrupt(void)
 {
   /* Write your code here ... */
+	TMR_OnInterrupt();
 }
 
 /*
