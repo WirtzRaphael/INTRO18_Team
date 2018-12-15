@@ -361,11 +361,11 @@ void SHELL_ParseCmd(uint8_t *cmd) {
 
 #if PL_CONFIG_HAS_RTOS
 static void ShellTask(void *pvParameters) {
-	(void)pvParameters; /* not used */
   int i;
+  (void)pvParameters; /* not used */
   /*! \todo Extend as needed */
-  unsigned char p[30];
-  unsigned char* msg;
+
+
   //size_t p[30];				/* string size */
   //uint8_t* msg; 			/* message */
 
@@ -385,7 +385,7 @@ static void ShellTask(void *pvParameters) {
 #endif
 #if PL_CONFIG_HAS_SHELL_QUEUE && PL_CONFIG_SQUEUE_SINGLE_CHAR
     {
-    	/*! \todo - nothing_todo Handle shell queue */
+    	/*! \todo done - nothing_todo Handle shell queue */
     	i = 0;
     	do{
 			p[i] = SQUEUE_ReceiveChar();
@@ -395,7 +395,7 @@ static void ShellTask(void *pvParameters) {
     }
 #elif PL_CONFIG_HAS_SHELL_QUEUE /* !PL_CONFIG_SQUEUE_SINGLE_CHAR */
     {
-    	/*! \todo - done Handle shell queue */
+    	/*! \todo done - Handle shell queue */
     	unsigned char p[30];
     	unsigned char* msg;
 
