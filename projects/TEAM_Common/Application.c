@@ -53,6 +53,9 @@
 #if PL_CONFIG_HAS_REFLECTANCE
   #include "Reflectance.h"
 #endif
+#if PL_CONFIG_HAS_REMOTE
+  #include "RStdIO.h"
+#endif
 #include "Sumo.h"
 
 #if PL_CONFIG_HAS_EVENTS
@@ -102,7 +105,18 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1	//rw: depends on PL_LOCAL_CONFIG_NOF_KEYS, in KeyDebounce.c
   case EVNT_SW1_PRESSED:
 	  BtnMsg(1, "pressed");
-	  //LF_StopFollowing();
+#if PL_CONFIG_BOARD_IS_ROBO
+#if PL_CONFIG_HAS_LINE_FOLLOW
+	  LF_StartStopFollowing();
+#endif /* HAS_LINE_FOLLOW */
+#endif /* IS_ROBO */
+#if PL_CONFIG_BOARD_IS_REMOTE
+#if PL_CONFIG_HAS_REMOTE
+	  (void)RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_IN,
+			  "buzzer buz 8700 400\r\n",
+			  sizeof("buzzer buz 8700 400\r\n")-1);
+#endif /* HAS_REMOTE */
+#endif /* IS_REMOTE */
      break;
   case EVNT_SW1_RELEASED:
 	  BtnMsg(1,"released");
@@ -135,6 +149,11 @@ void APP_EventHandler(EVNT_Handle event) {
      break;
   case EVNT_SW3_RELEASED:
      BtnMsg(3, "released");
+#if PL_CONFIG_HAS_REMOTE
+     (void)RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_IN,
+    		 "line start\r\n",
+			 sizeof("line start\r\n")-1);
+#endif
      break;
   case EVNT_SW3_LONG_PRESSED:
      BtnMsg(3, "long pressed");
@@ -163,6 +182,11 @@ void APP_EventHandler(EVNT_Handle event) {
      break;
   case EVNT_SW5_RELEASED:
      BtnMsg(5, "released");
+#if PL_CONFIG_HAS_REMOTE
+     (void)RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_IN,
+    		 "line start\r\n",
+			 sizeof("line stop\r\n")-1);
+#endif
      break;
   case EVNT_SW5_LONG_PRESSED:
      BtnMsg(5, "long pressed");
@@ -447,7 +471,14 @@ static void taskZork(void *pvParameters){
  * APP
  * -------------------------------------------------- */
 void APP_Start(void) {
+#if PL_CONFIG_BOARD_IS_REMOTE
+  /* need pull-up on UART Rx pin (PTC3) */
+  //PORT_PDD_SetPinPullSelect(PORTC_BASE_PTR, 3, PORT_PDD_PULL_UP);
+  //PORT_PDD_SetPinPullEnable(PORTC_BASE_PTR, 3, PORT_PDD_PULL_ENABLE);
+#endif
+
   PL_Init();
+  //RNETA_Init();// in Platform.c, REMOTE_Init() already;
   //RTOS_init(); // in PL_Init already
   //SEM_Init();
 
@@ -469,7 +500,7 @@ void APP_Start(void) {
 	appTask,						/* function */
 	"appTask",						/* kernel awareness name */
 	//configMINIMAL_STACK_SIZE+120,	/* stack */
-	500/sizeof(StackType_t),
+	1000/sizeof(StackType_t),
 	(void*) NULL, 					/* task parameter */
 	tskIDLE_PRIORITY + 2, 				/* priority */
 	&taskHndl 						/* handle */
