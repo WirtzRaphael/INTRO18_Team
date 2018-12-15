@@ -355,9 +355,10 @@ static void appTask(void *pvParameters){
 
 	// ========== [ start sequency ] ==========
 #if PL_CONFIG_HAS_BUZZER
-	//BUZ_Beep(300,1000);
+	BUZ_Beep(300,1000);
 #endif /* PL_CONFIG_HAS_BUZZER */
 	TRG_SetTrigger(TRG_BLINK,0,blinkLED, NULL);
+	//TRG1_AddTrigger(TRG_BLINK,0,blinkLED, NULL);
 
 	// ========== [ loop ] ==========
 	for(;;){
