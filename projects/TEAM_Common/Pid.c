@@ -475,12 +475,12 @@ void PID_Init(void) {
   config.speedRightConfig.integral = 0;
 
   /* lineFwConfig, parcour results:
-   * ownTest: 	40 works good	, 48 on limit
-   * sinan		(none)			, 42 on limit
+   * ownTest: 	(none)
+   * sinan		48 on limit
    */
   config.lineFwConfig.pFactor100 = 600;
   config.lineFwConfig.iFactor100 = 25;
-  config.lineFwConfig.dFactor100 = 200;
+  config.lineFwConfig.dFactor100 = 300;
   config.lineFwConfig.iAntiWindup = 250;
   config.lineFwConfig.maxSpeedPercent = 48;
   config.lineFwConfig.lastError = 0;
