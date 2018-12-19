@@ -107,26 +107,25 @@ void APP_EventHandler(EVNT_Handle event) {
 	  BtnMsg(1, "pressed");
      break;
   case EVNT_SW1_RELEASED:
-	  BtnMsg(1,"released");
+	  //BtnMsg(1,"released");
 #if PL_CONFIG_BOARD_IS_ROBO
 #if PL_CONFIG_HAS_LINE_FOLLOW
 	  LF_StartStopFollowing();
 #endif /* HAS_LINE_FOLLOW */
 #endif /* IS_ROBO */
+	  break;
+  case EVNT_SW1_LONG_PRESSED:
+	  //BtnMsg(1,"long pressed");
+	  break;
+  case EVNT_SW1_LONG_RELEASED:
+	  //BtnMsg(1,"long released");
 #if PL_CONFIG_BOARD_IS_REMOTE	/* push button left */
 #if PL_CONFIG_HAS_REMOTE
 	  (void)RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_IN,
-			  "buzzer buz 8700 400\r\n",
-			  sizeof("buzzer buz 8700 400\r\n")-1);
+			  "pid status\r\n",
+			  sizeof("pid status\r\n")-1);
 #endif /* HAS_REMOTE */
 #endif /* IS_REMOTE */
-	  break;
-  case EVNT_SW1_LONG_PRESSED:
-	  BtnMsg(1,"long pressed");
-	  break;
-  case EVNT_SW1_LONG_RELEASED:
-	  BtnMsg(1,"long released");
-	  //LF_StartStopFollowing();
 	  break;
 #endif /* PL_CONFIG_NOF_KEYS */
 //---
@@ -135,13 +134,18 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(2, "pressed");
      break;
   case EVNT_SW2_RELEASED:
-     BtnMsg(2, "released");
+     //BtnMsg(2, "released");
      break;
   case EVNT_SW2_LONG_PRESSED:
-     BtnMsg(2, "long pressed");
+     //BtnMsg(2, "long pressed");
      break;
   case EVNT_SW2_LONG_RELEASED:
-     BtnMsg(2, "long released");
+     //BtnMsg(2, "long released");
+#if PL_CONFIG_HAS_REMOTE
+	  (void)RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_IN,
+			  "ref status\r\n",
+			  sizeof("ref status\r\n")-1);
+#endif /* HAS_REMOTE */
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
 //---
@@ -150,7 +154,7 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(3, "pressed");
      break;
   case EVNT_SW3_RELEASED:
-     BtnMsg(3, "released");
+     //BtnMsg(3, "released");
 #if PL_CONFIG_HAS_REMOTE
      (void)RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_IN,
     		 "line start\r\n",
@@ -158,10 +162,10 @@ void APP_EventHandler(EVNT_Handle event) {
 #endif
      break;
   case EVNT_SW3_LONG_PRESSED:
-     BtnMsg(3, "long pressed");
+     //BtnMsg(3, "long pressed");
      break;
   case EVNT_SW3_LONG_RELEASED:
-     BtnMsg(3, "long released");
+     //BtnMsg(3, "long released");
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
 //---
@@ -170,13 +174,18 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(4, "pressed");
      break;
   case EVNT_SW4_RELEASED:
-     BtnMsg(4, "released");
+     //BtnMsg(4, "released");
      break;
   case EVNT_SW4_LONG_PRESSED:
-     BtnMsg(4, "long pressed");
+     //BtnMsg(4, "long pressed");
+#if PL_CONFIG_HAS_REMOTE
+	  (void)RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_IN,
+			  "buzzer buz 800 400\r\n",
+			  sizeof("buzzer buz 800 400\r\n")-1);
+#endif /* HAS_REMOTE */
      break;
   case EVNT_SW4_LONG_RELEASED:
-     BtnMsg(4, "long released");
+     //BtnMsg(4, "long released");
      break;
 #endif /* PL_CONFIG_NOF_K§EYS */
 //---
@@ -190,13 +199,13 @@ void APP_EventHandler(EVNT_Handle event) {
 #endif
      break;
   case EVNT_SW5_RELEASED:
-     BtnMsg(5, "released");
+    //BtnMsg(5, "released");
      break;
   case EVNT_SW5_LONG_PRESSED:
-     BtnMsg(5, "long pressed");
+     //BtnMsg(5, "long pressed");
      break;
   case EVNT_SW5_LONG_RELEASED:
-     BtnMsg(5, "long released");
+     //BtnMsg(5, "long released");
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
 //---
@@ -205,13 +214,13 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(6, "pressed");
      break;
   case EVNT_SW6_RELEASED:
-     BtnMsg(6, "released");
+     //BtnMsg(6, "released");
      break;
   case EVNT_SW6_LONG_PRESSED:
-     BtnMsg(6, "long pressed");
+     //BtnMsg(6, "long pressed");
      break;
   case EVNT_SW6_LONG_RELEASED:
-     BtnMsg(6, "long released");
+    //BtnMsg(6, "long released");
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
 //---
@@ -220,13 +229,13 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(7, "pressed");
      break;
   case EVNT_SW7_RELEASED:
-     BtnMsg(7, "released");
+     //BtnMsg(7, "released");
      break;
   case EVNT_SW7_LONG_PRESSED:
-     BtnMsg(7, "long pressed");
+     //BtnMsg(7, "long pressed");
      break;
   case EVNT_SW7_LONG_RELEASED:
-     BtnMsg(7, "long released");
+     //BtnMsg(7, "long released");
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
 //---
