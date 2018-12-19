@@ -178,19 +178,19 @@ void APP_EventHandler(EVNT_Handle event) {
   case EVNT_SW4_LONG_RELEASED:
      BtnMsg(4, "long released");
      break;
-#endif /* PL_CONFIG_NOF_KEYS */
+#endif /* PL_CONFIG_NOF_K§EYS */
 //---
 #if PL_CONFIG_NOF_KEYS>=5	/* push button down */
   case EVNT_SW5_PRESSED:
      BtnMsg(5, "pressed");
+#if PL_CONFIG_HAS_REMOTE
+     (void)RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_IN,
+    		 "line stop\r\n",
+			 sizeof("line stop\r\n")-1);
+#endif
      break;
   case EVNT_SW5_RELEASED:
      BtnMsg(5, "released");
-#if PL_CONFIG_HAS_REMOTE
-     (void)RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_IN,
-    		 "line start\r\n",
-			 sizeof("line stop\r\n")-1);
-#endif
      break;
   case EVNT_SW5_LONG_PRESSED:
      BtnMsg(5, "long pressed");
