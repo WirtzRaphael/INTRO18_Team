@@ -101,25 +101,25 @@ void APP_EventHandler(EVNT_Handle event) {
   case EVNT_LED_HEARTBEAT:
     LED2_Neg();
     break;
-
+//---
 #if PL_CONFIG_NOF_KEYS>=1	//rw: depends on PL_LOCAL_CONFIG_NOF_KEYS, in KeyDebounce.c
   case EVNT_SW1_PRESSED:
 	  BtnMsg(1, "pressed");
+     break;
+  case EVNT_SW1_RELEASED:
+	  BtnMsg(1,"released");
 #if PL_CONFIG_BOARD_IS_ROBO
 #if PL_CONFIG_HAS_LINE_FOLLOW
 	  LF_StartStopFollowing();
 #endif /* HAS_LINE_FOLLOW */
 #endif /* IS_ROBO */
-#if PL_CONFIG_BOARD_IS_REMOTE
+#if PL_CONFIG_BOARD_IS_REMOTE	/* push button left */
 #if PL_CONFIG_HAS_REMOTE
 	  (void)RSTDIO_SendToTxStdio(RSTDIO_QUEUE_TX_IN,
 			  "buzzer buz 8700 400\r\n",
 			  sizeof("buzzer buz 8700 400\r\n")-1);
 #endif /* HAS_REMOTE */
 #endif /* IS_REMOTE */
-     break;
-  case EVNT_SW1_RELEASED:
-	  BtnMsg(1,"released");
 	  break;
   case EVNT_SW1_LONG_PRESSED:
 	  BtnMsg(1,"long pressed");
@@ -129,7 +129,8 @@ void APP_EventHandler(EVNT_Handle event) {
 	  //LF_StartStopFollowing();
 	  break;
 #endif /* PL_CONFIG_NOF_KEYS */
-#if PL_CONFIG_NOF_KEYS>=2
+//---
+#if PL_CONFIG_NOF_KEYS>=2	/* push button right */
   case EVNT_SW2_PRESSED:
      BtnMsg(2, "pressed");
      break;
@@ -143,7 +144,8 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(2, "long released");
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
-#if PL_CONFIG_NOF_KEYS>=3
+//---
+#if PL_CONFIG_NOF_KEYS>=3	/* push button up */
   case EVNT_SW3_PRESSED:
      BtnMsg(3, "pressed");
      break;
@@ -162,7 +164,8 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(3, "long released");
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
-#if PL_CONFIG_NOF_KEYS>=4
+//---
+#if PL_CONFIG_NOF_KEYS>=4		/* push button middle */
   case EVNT_SW4_PRESSED:
      BtnMsg(4, "pressed");
      break;
@@ -176,7 +179,8 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(4, "long released");
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
-#if PL_CONFIG_NOF_KEYS>=5
+//---
+#if PL_CONFIG_NOF_KEYS>=5	/* push button down */
   case EVNT_SW5_PRESSED:
      BtnMsg(5, "pressed");
      break;
@@ -195,6 +199,7 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(5, "long released");
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
+//---
 #if PL_CONFIG_NOF_KEYS>=6
   case EVNT_SW6_PRESSED:
      BtnMsg(6, "pressed");
@@ -209,6 +214,7 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(6, "long released");
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
+//---
 #if PL_CONFIG_NOF_KEYS>=7
   case EVNT_SW7_PRESSED:
      BtnMsg(7, "pressed");
@@ -223,6 +229,7 @@ void APP_EventHandler(EVNT_Handle event) {
      BtnMsg(7, "long released");
      break;
 #endif /* PL_CONFIG_NOF_KEYS */
+//---
     default:
       break;
    } /* switch */
