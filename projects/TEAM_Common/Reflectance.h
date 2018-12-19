@@ -14,7 +14,7 @@
 
 #define REF_NOF_SENSORS 6
 #define REF_MIDDLE_LINE_VALUE  ((REF_NOF_SENSORS+1)*1000/2)
-#define REF_MAX_LINE_VALUE     ((REF_NOF_SENSORS-1)*1000) /* maximum value for REF_GetLine() */
+#define REF_MAX_LINE_VALUE     ((REF_NOF_SENSORS+1)*1000) /* maximum value for REF_GetLine() */
 
 typedef enum {
   REF_LINE_NONE=0,     /* no line, sensors do not see a line */
