@@ -40,11 +40,18 @@ typedef enum {
   STATE_STOP               /* stop the engines */
 } StateType;
 
+/* added for competition */
+typedef enum{
+	STATE_TURN_LEFT,
+	STATE_TURN_RIGHT
+}StateTurnType;
+
 /* task notification bits */
 #define LF_START_FOLLOWING (1<<0)  /* start line following */
 #define LF_STOP_FOLLOWING  (1<<1)  /* stop line following */
 
 static volatile StateType LF_currState = STATE_IDLE;
+static volatile StateTurnType LF_currStateTurn = STATE_TURN_LEFT;	/* added for competition */
 static xTaskHandle LFTaskHandle;
 
 void LF_StartFollowing(void) {
@@ -106,7 +113,14 @@ static void StateMachine(void) {
        if (lineKind==REF_LINE_FULL) {
          LF_currState = STATE_FINISHED;
        } if (lineKind==REF_LINE_NONE) {
-         TURN_Turn(TURN_LEFT180, NULL);
+     	  /* turn left or right and set next turn*/
+     	  if(LF_currStateTurn==STATE_TURN_LEFT){
+     		  TURN_Turn(TURN_LEFT180, NULL);
+     		  LF_currStateTurn = STATE_TURN_RIGHT;
+     	  } else {
+     		  TURN_Turn(TURN_RIGHT180, NULL);
+     		  LF_currStateTurn = STATE_TURN_LEFT;
+     	  }
          DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
          LF_currState = STATE_FOLLOW_SEGMENT;
        } else {
