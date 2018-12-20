@@ -115,10 +115,12 @@ static void StateMachine(void) {
        } if (lineKind==REF_LINE_NONE) {
      	  /* turn left or right and set next turn*/
      	  if(LF_currStateTurn==STATE_TURN_LEFT){
-     		  TURN_Turn(TURN_LEFT180, NULL);
+     		  TURN_TurnAngle(150, NULL);
+     		  //TURN_Turn(TURN_LEFT180, NULL);
      		  LF_currStateTurn = STATE_TURN_RIGHT;
      	  } else {
-     		  TURN_Turn(TURN_RIGHT180, NULL);
+     		  TURN_TurnAngle(-150, NULL);
+     		  //TURN_Turn(TURN_RIGHT180, NULL);
      		  LF_currStateTurn = STATE_TURN_LEFT;
      	  }
          DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
