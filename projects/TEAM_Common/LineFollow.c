@@ -76,7 +76,9 @@ static bool FollowSegment(void) {
 
   currLine = REF_GetLineValue();
   currLineKind = REF_GetLineKind();
-  if (currLineKind==REF_LINE_STRAIGHT|REF_LINE_LEFT|REF_LINE_RIGHT) {
+  if ((currLineKind==REF_LINE_STRAIGHT)||
+		  (currLineKind==REF_LINE_LEFT)||
+		  (currLineKind==REF_LINE_RIGHT)) {
     PID_Line(currLine, REF_MIDDLE_LINE_VALUE); /* move along the line */
     return TRUE;
   } else {
@@ -100,30 +102,17 @@ static void StateMachine(void) {
       break;
 
     case STATE_TURN:
-      lineKind = REF_GetLineKind();
-      if (lineKind==REF_LINE_FULL) {
-        LF_currState = STATE_FINISHED;
-        //SHELL_SendString((unsigned char*)"LF REF_LINE_FULL!\r\n");
-      } if (lineKind==REF_LINE_NONE) {
-        TURN_Turn(TURN_LEFT180, NULL);
-        DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
-        LF_currState = STATE_FOLLOW_SEGMENT;
-    	//SHELL_SendString((unsigned char*)"LF REF_LINE_NONE!\r\n");
-      } if (lineKind==REF_LINE_RIGHT) {
-    	  LF_currState = STATE_FOLLOW_SEGMENT;
-    	  //SHELL_SendString((unsigned char*)"LF REF_LINE_RIGHT!\r\n");
-      } if (lineKind==REF_LINE_LEFT) {
-    	  LF_currState = STATE_FOLLOW_SEGMENT;
-    	  //SHELL_SendString((unsigned char*)"LF REF_LINE_LEFT!\r\n");
-      }
-      /*if (lineKind==REF_LINE_STRAIGHT) {
-    	  LF_currState = STATE_FOLLOW_SEGMENT;
-      } */
-      else {
-        LF_currState = STATE_STOP;
-    	//SHELL_SendString((unsigned char*)"LF STOP!\r\n");
-      }
-      break;
+       lineKind = REF_GetLineKind();
+       if (lineKind==REF_LINE_FULL) {
+         LF_currState = STATE_FINISHED;
+       } if (lineKind==REF_LINE_NONE) {
+         TURN_Turn(TURN_LEFT180, NULL);
+         DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
+         LF_currState = STATE_FOLLOW_SEGMENT;
+       } else {
+         LF_currState = STATE_STOP;
+       }
+       break;
 
     case STATE_FINISHED:
       SHELL_SendString("Finished!\r\n");
