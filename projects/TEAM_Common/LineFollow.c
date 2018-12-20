@@ -38,6 +38,12 @@ typedef enum {
   STATE_TURN,              /* reached an intersection, turning around */
   STATE_FINISHED,          /* reached finish area */
   STATE_STOP               /* stop the engines */
+  STATE_IDLE,              	/* idle, not doing anything */
+  STATE_FOLLOW_SEGMENT,    	/* line following segment, going forward */
+  STATE_TURN,              	/* reached an intersection, turning around */
+  STATE_SEARCH,				/* search line */
+  STATE_FINISHED,          	/* reached finish area */
+  STATE_STOP               	/* stop the engines */
 } StateType;
 
 /* added for competition */
@@ -104,7 +110,8 @@ static void StateMachine(void) {
       if (!FollowSegment()) {
         //SHELL_SendString((unsigned char*)"No line, stopped!\r\n");
         //LF_currState = STATE_STOP; /* stop if we do not have a line any more */
-        LF_currState = STATE_TURN;
+        //LF_currState = STATE_TURN;
+    	  LF_currState = STATE_SEARCH;
       }
       break;
 
@@ -115,11 +122,13 @@ static void StateMachine(void) {
        } if (lineKind==REF_LINE_NONE) {
      	  /* turn left or right and set next turn*/
      	  if(LF_currStateTurn==STATE_TURN_LEFT){
-     		  TURN_TurnAngle(150, NULL);
+     		  //TURN_Turn(TURN_STOP, NULL);
+     		  //TURN_TurnAngle(130, NULL);
      		  //TURN_Turn(TURN_LEFT180, NULL);
      		  LF_currStateTurn = STATE_TURN_RIGHT;
      	  } else {
-     		  TURN_TurnAngle(-150, NULL);
+     		  //TURN_Turn(TURN_STOP, NULL);
+     		  //TURN_TurnAngle(-130, NULL);
      		  //TURN_Turn(TURN_RIGHT180, NULL);
      		  LF_currStateTurn = STATE_TURN_LEFT;
      	  }
@@ -129,6 +138,29 @@ static void StateMachine(void) {
          LF_currState = STATE_STOP;
        }
        break;
+
+    case STATE_SEARCH:
+    	lineKind = REF_GetLineKind();
+    	if (lineKind==REF_LINE_NONE) {
+    		//int32_t turnValue;
+		  /* turn left or right and set next turn*/
+		  if(LF_currStateTurn==STATE_TURN_LEFT){
+			  TURN_TurnAngle(-5, NULL);
+			  //LF_currStateTurn = STATE_TURN_RIGHT;
+		  } else {
+			  TURN_TurnAngle(5, NULL);
+			  //LF_currStateTurn = STATE_TURN_LEFT;
+		  }
+		 DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
+    	} else{
+    		LF_currState = STATE_FOLLOW_SEGMENT;
+    		if(LF_currStateTurn==STATE_TURN_LEFT){
+    			LF_currStateTurn = STATE_TURN_RIGHT;
+    		}else{
+    			LF_currStateTurn = STATE_TURN_LEFT;
+    		}
+    	}
+    	break;
 
     case STATE_FINISHED:
       SHELL_SendString("Finished!\r\n");
