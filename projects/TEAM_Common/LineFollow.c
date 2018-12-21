@@ -36,14 +36,9 @@ typedef enum {
   STATE_IDLE,              /* idle, not doing anything */
   STATE_FOLLOW_SEGMENT,    /* line following segment, going forward */
   STATE_TURN,              /* reached an intersection, turning around */
+  STATE_SEARCH,				/* search line */
   STATE_FINISHED,          /* reached finish area */
   STATE_STOP               /* stop the engines */
-  STATE_IDLE,              	/* idle, not doing anything */
-  STATE_FOLLOW_SEGMENT,    	/* line following segment, going forward */
-  STATE_TURN,              	/* reached an intersection, turning around */
-  STATE_SEARCH,				/* search line */
-  STATE_FINISHED,          	/* reached finish area */
-  STATE_STOP               	/* stop the engines */
 } StateType;
 
 /* added for competition */
@@ -58,6 +53,8 @@ typedef enum{
 
 static volatile StateType LF_currState = STATE_IDLE;
 static volatile StateTurnType LF_currStateTurn = STATE_TURN_LEFT;	/* added for competition */
+static volatile uint16_t cntTurnAngle = 0;							/* added for competition */
+
 static xTaskHandle LFTaskHandle;
 
 void LF_StartFollowing(void) {
@@ -146,19 +143,25 @@ static void StateMachine(void) {
 		  /* turn left or right and set next turn*/
 		  if(LF_currStateTurn==STATE_TURN_LEFT){
 			  TURN_TurnAngle(-5, NULL);
+			  cntTurnAngle = cntTurnAngle + 1;
 			  //LF_currStateTurn = STATE_TURN_RIGHT;
 		  } else {
 			  TURN_TurnAngle(5, NULL);
+			  cntTurnAngle = cntTurnAngle + 1;
 			  //LF_currStateTurn = STATE_TURN_LEFT;
 		  }
 		 DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
     	} else{
     		LF_currState = STATE_FOLLOW_SEGMENT;
-    		if(LF_currStateTurn==STATE_TURN_LEFT){
-    			LF_currStateTurn = STATE_TURN_RIGHT;
+    		if(cntTurnAngle >= 5){
+    			if(LF_currStateTurn==STATE_TURN_LEFT){
+    				LF_currStateTurn = STATE_TURN_RIGHT;
+				}else
+					LF_currStateTurn = STATE_TURN_LEFT;
     		}else{
-    			LF_currStateTurn = STATE_TURN_LEFT;
+    			/* change nothing */
     		}
+    		cntTurnAngle = 0;
     	}
     	break;
 
