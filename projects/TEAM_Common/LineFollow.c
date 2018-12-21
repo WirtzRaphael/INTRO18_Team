@@ -115,6 +115,7 @@ static void StateMachine(void) {
     case STATE_TURN:
        lineKind = REF_GetLineKind();
        if (lineKind==REF_LINE_FULL) {
+    	 //LF_StartStopFollowing();
          LF_currState = STATE_FINISHED;
        } if (lineKind==REF_LINE_NONE) {
      	  /* turn left or right and set next turn*/

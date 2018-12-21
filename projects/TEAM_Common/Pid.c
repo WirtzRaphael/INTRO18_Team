@@ -482,7 +482,7 @@ void PID_Init(void) {
   config.lineFwConfig.iFactor100 = 25;
   config.lineFwConfig.dFactor100 = 300;
   config.lineFwConfig.iAntiWindup = 250;
-  config.lineFwConfig.maxSpeedPercent = 48;
+  config.lineFwConfig.maxSpeedPercent = 50;
   config.lineFwConfig.lastError = 0;
   config.lineFwConfig.integral = 0;
 
@@ -490,7 +490,7 @@ void PID_Init(void) {
   config.posLeftConfig.iFactor100 = 10;
   config.posLeftConfig.dFactor100 = 100;
   config.posLeftConfig.iAntiWindup = 10000;
-  config.posLeftConfig.maxSpeedPercent = 50;
+  config.posLeftConfig.maxSpeedPercent = 60;
   config.posLeftConfig.lastError = 0;
   config.posLeftConfig.integral = 0;
   config.posRightConfig.pFactor100 = config.posLeftConfig.pFactor100;
